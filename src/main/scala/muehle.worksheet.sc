@@ -1,57 +1,53 @@
 
 val eol = sys.props("line.separator")
 
-def line(scale: Int = 0) = "+" + "-" * (2 + scale * 3)
-def fill(scale: Int = 0) = "|" + " " * (2 + scale * 3)
+def test(rings: Int): String = {
+    var res = ""
+    if (rings < 1) return res
+    val scale = rings - 1
+    def space(i: Int): String = "|   " * (scale - i ) + "|" + " " * (4 * i + 3) + (if (i == 0) " " else "|") + " " * (4 * i + 3) + "|" + "   |" * (scale - i ) + eol
+    def line(i: Int): String = "|   " * (scale - i ) + "+" + "-" * (4 * i + 3) + "+" + "-" * (4 * i + 3) + "+" + "   |" * (scale - i ) + eol
+    def middle(): String = "+---" * scale + "+" + " " * 7 + "+" + "---+" * scale + eol
 
-def test(): String = {
-    line(2) + "+" + line(2).reverse + eol +
-    fill(2) + "|" + fill(2).reverse + eol +
-    fill() + line(1) + "+" + line(1).reverse + fill().reverse + eol +
-    fill() + fill(1) + "|" + fill(1).reverse + fill().reverse + eol +
-    fill() + fill() + line() + "+" + line().reverse + fill() + eol +
-    fill() + fill() + fill() + " " + fill().reverse + fill().reverse + fill().reverse + eol
+    for (i <- scale to 0 by -1) {
+        res += line(i) + space(i)
+    }
 
+    res += middle()
+
+    for (i <- 0 to scale by 1) {
+        res += space(i) + line(i)
+    }
+
+    res
 }
-
-def test2(): String = {
-    "+--------+--------+" + eol +
-    "|        |        |" + eol +
-    "|  +-----+-----+  |" + eol +
-    "|  |     |     |  |" + eol +
-    "|  |  +--+--+  |  |" + eol +
-    "|  |  |     |  |  |" + eol +
-    "+--+--+     +--+--+" + eol +
-    "|  |  |     |  |  |" + eol +
-    "|  |  +--+--+  |  |" + eol +
-    "|  |     |     |  |" + eol +
-    "|  +-----+-----+  |" + eol +
-    "|        |        |" + eol +
-    "+--------+--------+" + eol
-}
-
-
-
-print(fill())
-print(line())
-print(test2())
-
-
 /*
-"+--------+--------+" + eol +
-"|        |        |" + eol +
-"|  +-----+-----+  |" + eol +
-"|  |     |     |  |" + eol +
-"|  |  +--+--+  |  |" + eol +
-"|  |  |     |  |  |" + eol +
-"+--+--+     +--+--+" + eol +
-"|  |  |     |  |  |" + eol +
-"|  |  +--+--+  |  |" + eol +
-"|  |     |     |  |" + eol +
-"|  +-----+-----+  |" + eol +
-"|        |        |" + eol +
-"+--------+--------+" + eol
+def test(rings: Int): String = {
+    if (rings < 1) return ""
+    val scale = rings - 1
+    
+    (scale until 0).map()
+}
 */
 
+print(test(5))
+
+/*
 
 
+def fieldAsString(): String = {
+    "+-----------+-----------+" + eol +
+    "|           |           |" + eol +
+    "|   +-------+-------+   |" + eol +
+    "|   |       |       |   |" + eol +
+    "|   |   +---+---+   |   |" + eol +
+    "|   |   |       |   |   |" + eol +
+    "+---+---+       +---+---+" + eol +
+    "|   |   |       |   |   |" + eol +
+    "|   |   +---+---+   |   |" + eol +
+    "|   |       |       |   |" + eol +
+    "|   +-------+-------+   |" + eol +
+    "|           |           |" + eol +
+    "+-----------+-----------+" + eol
+}
+*/
