@@ -25,7 +25,7 @@ def test(rings: Int): String = {
 def test(rings: Int): String = {
     if (rings < 1) return ""
     val scale = rings - 1
-    
+
     (scale until 0).map()
 }
 */
