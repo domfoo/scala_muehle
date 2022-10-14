@@ -1,3 +1,4 @@
+package de.htwg.se.muehle
 
 val eol = sys.props("line.separator")
 

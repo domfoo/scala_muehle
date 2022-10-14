@@ -1,3 +1,5 @@
+package de.htwg.se.muehle
+
 case class PlayField() {
     /**
       * Creates a String that represents a mill play field.
