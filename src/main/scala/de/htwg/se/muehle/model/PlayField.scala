@@ -17,17 +17,10 @@ case class PlayField(val rings: Int = 3) {
     def middle(): String = 
         "+---" * (rings - 1) + "+" + " " * 7 + "+" + "---+" * (rings - 1) + eol
     
-    def fieldAsString(): String = {
-        if (rings < 1) {
-            return ""
-        }
-
-        ((rings - 1) to 0 by -1).map((x: Int) => line(x) + space(x)).mkString("")
-        + middle()
-        + (0 until rings).map((x: Int) => space(x) + line(x)).mkString("")
+    override def toString(): String = {
+        if (rings < 1) return "" + eol
+        ((rings - 1) to 0 by -1).map((x: Int) => line(x) + space(x)).mkString("") + middle() + (0 until rings).map((x: Int) => space(x) + line(x)).mkString("")
     }
-
-    override def toString(): String = fieldAsString()
 }
 
 
