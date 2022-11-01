@@ -1,5 +1,7 @@
 package de.htwg.se.muehle
+import aview.TUI
+import model.PlayField
 
-@main def scala_muehle: Unit =
-  val field = PlayField()
-  print(field)
+@main def run: Unit =
+    val tui = TUI()
+    tui.run
