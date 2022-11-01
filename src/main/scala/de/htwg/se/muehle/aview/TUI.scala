@@ -3,6 +3,7 @@ package aview
 
 import model.Move
 import model.Stone
+import model.Player
 import scala.io.StdIn.readLine
 import de.htwg.se.muehle.model.PlayField
 
@@ -40,11 +41,12 @@ class TUI():
             handleInput(readLine)
             print(field)
 
-    def handleInput(input: String): Any =
+    def handleInput(input: String): Option[Move] =
         input match
             case "q" =>
                 println("Bye!")
                 System.exit(0)
+                None
             case _ => {
                 val chars = input.toCharArray
                 val stone =  chars(0) match
@@ -55,5 +57,14 @@ class TUI():
                         case _   => Stone.Empty
                 val x = chars(1).toInt
                 val y = chars(2).toInt
-                Move(stone, x, y)
+                Some(Move(stone, x, y))
             }
+
+    def update(player: Player, millsCount: Int, gameEnded: Boolean): String = {
+        if (gameEnded)
+            player.getName + " has won!"
+        else if (millsCount > 0)
+            player.getName + " has " + millsCount + " mills, remove " + millsCount + " stones!"
+        else
+            player.getName + ", it's your turn!"
+    }
