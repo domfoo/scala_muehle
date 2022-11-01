@@ -32,4 +32,4 @@ metals.sbt
 /.worksheet/
 
 # Worksheet
-src\main\scala\de\htwg\se\muehle\model\model.worksheet.sc
+src main/scala/de/htwg/se/muehle/model/Model.worksheet.sc
