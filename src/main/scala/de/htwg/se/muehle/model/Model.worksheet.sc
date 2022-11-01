@@ -12,7 +12,7 @@ def test(rings: Int): String = {
         + (0 until scale + 1).map((x: Int) => space(x) + line(x)).mkString("")
 }
 
-test(5)
+test(3)
 
 /*
 def fieldAsString(): String = {
@@ -31,3 +31,6 @@ def fieldAsString(): String = {
     "+-----------+-----------+" + eol
 }
 */
+val rings = 3
+val number = 8
+val mills = (0 until rings*number).toList
