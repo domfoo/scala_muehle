@@ -2,6 +2,7 @@ package de.htwg.se.muehle
 
 import org.scalatest.matchers.should.Matchers._
 import org.scalatest.wordspec.AnyWordSpec
+import model.PlayField
 
 class PlayFieldSpec extends AnyWordSpec {
     "Muehle" should {
@@ -12,7 +13,7 @@ class PlayFieldSpec extends AnyWordSpec {
 
         "have a line as String of form '|   |   +---+---+   |   |'" in {
             field3.line(0) should be("|   |   +---+---+   |   |" + eol)
-        } 
+        }
 
         "have a space as String of form '|   |   |       |   |   |'" in {
             field3.space(0) should be("|   |   |       |   |   |" + eol)
