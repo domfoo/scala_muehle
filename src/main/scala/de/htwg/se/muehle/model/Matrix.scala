@@ -17,6 +17,22 @@ case class Matrix(matrix: Vector[Vector[Stone]]):
     def isValidCell(row: Int, col: Int): Boolean = {
         cells.contains((row, col))
     }
-    def replaceCell(x1: Int, x2: Int, elem: Stone): Matrix = {
-        copy(matrix.updated(x1, matrix(x1).updated(x2, elem)))
+    def replaceCell(row: Int, col: Int, cell: Stone): Matrix = {
+        copy(matrix.updated(row, matrix(row).updated(col, cell)))
+    }
+    def setStone(x: Int, y: Int, stone: Stone): Matrix = {
+        replaceCell(x, y, stone)
+    }
+    def moveStone(old_x: Int, old_y: Int, new_x: Int, new_y: Int): Matrix = {
+        val moving_stone = getCell(old_x, old_y)
+        replaceCell(new_x, new_y, moving_stone)
+    }
+    override def toString: String = {
+        "\n" +
+        (0 until size).map(
+            x => (0 until size).map(
+                y => if (isValidCell(x, y)) s" ${getCell(x,y)} " else "   ")
+                .mkString(""))
+            .mkString("\n")
+        + "\n"
     }
