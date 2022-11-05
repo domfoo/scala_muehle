@@ -20,19 +20,31 @@ case class Matrix(matrix: Vector[Vector[Stone]]):
     def replaceCell(row: Int, col: Int, cell: Stone): Matrix = {
         copy(matrix.updated(row, matrix(row).updated(col, cell)))
     }
-    def setStone(x: Int, y: Int, stone: Stone): Matrix = {
-        replaceCell(x, y, stone)
+    def checkIfEmpty(x: Int, y: Int): Boolean = {
+        if (getCell(x, y) == Stone.Empty) true else false
+    }
+    def setStone(x: Int, y: Int, stone: Stone): Option[Matrix] = {
+        if (checkIfEmpty(x, y))
+            Some(replaceCell(x, y, stone))
+        else
+            println("Cell is not empty!")
+            None
     }
     def moveStone(old_x: Int, old_y: Int, new_x: Int, new_y: Int): Matrix = {
         val moving_stone = getCell(old_x, old_y)
         replaceCell(new_x, new_y, moving_stone)
     }
+    def removeStone(x: Int, y: Int): Matrix = {
+        replaceCell(x, y, Stone.Empty)
+    }
     override def toString: String = {
         "\n" +
+        "    0  1  2  3  4  5  6\n" +
+        "   _____________________\n" +
         (0 until size).map(
             x => (0 until size).map(
                 y => if (isValidCell(x, y)) s" ${getCell(x,y)} " else "   ")
-                .mkString(""))
+                .mkString(s"$x |", "", ""))
             .mkString("\n")
         + "\n"
     }
