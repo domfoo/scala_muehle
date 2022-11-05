@@ -11,7 +11,9 @@ case class Matrix(matrix: Vector[Vector[Stone]]):
     (3, 4), (3, 5), (3, 6), (4, 2), (4, 3), (4, 4),
     (5, 1), (5, 3), (5, 5), (6, 0), (6, 3), (6, 6)
     )
-    def getCell(row: Int, col: Int): Stone = matrix(row)(col)
+    def getCell(row: Int, col: Int): Stone = {
+        matrix(row)(col)
+    }
     def isValidCell(row: Int, col: Int): Boolean = {
         cells.contains((row, col))
     }
