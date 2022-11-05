@@ -9,19 +9,11 @@ case class Board(stones: Matrix):
         stones.getCell(row, col)
     }
     override def toString: String = {
-        s"\n${
-        (for {
-            x <- 0 until size
-        } yield {
-            (for {
-            y <- 0 until size
-            } yield {
-            if (isValidPosition(x, y)) {
-                s" ${this.cell(x, y)} "
-            } else {
-                " - "
-            }
-            }).mkString("")
-        }).mkString("\n")
-        }\n"
+        "\n" +
+        (0 until size).map(
+            x => (0 until size).map(
+                y => if (isValidPosition(x, y)) s" ${this.cell(x,y)} " else "   ")
+                .mkString(""))
+            .mkString("\n")
+        + "\n"
     }
