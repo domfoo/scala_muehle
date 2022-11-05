@@ -1,5 +1,5 @@
 # scala_muehle
-A software project for Software Engineering
+The game Mill as software project for Software Engineering at HTWG Konstanz
 
 ## Usage
 
