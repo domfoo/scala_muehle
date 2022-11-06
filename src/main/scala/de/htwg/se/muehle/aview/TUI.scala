@@ -3,12 +3,20 @@ package aview
 
 import model.Matrix
 import model.Stone
+import controller.Controller
 import scala.io.StdIn.readLine
+import de.htwg.se.muehle.util.Observer
 
-case class TUI():
-    var field = new Matrix(7, Stone.Empty)
+class TUI(controller: Controller) extends Observer:
+    controller.add(this)
+    var field = controller.field
+    var counter = 0
     def run = {
         println("---WELCOME TO MILL!---\n" +
+                "First, please enter the name of the first player: \n" +
+                controller.addPlayerOne(readLine) +
+                "Now, please enter the second player's name: \n" +
+                controller.addPlayerTwo(readLine) +
                 "Type 'set 33X' to place a stone X at the third row and third column.\n" +
                 "Type 'move 2223' to move a stone from (row=2,col=2) to (row=2,col=3).\n" +
                 field)
@@ -21,7 +29,6 @@ case class TUI():
             println(field.toString)
     }
     def handleInput(input: String): Option[Matrix] = {
-        // example: 'set 24X' <=> cmd="set", args=["2","4","X"]
         input match {
             /**case "q" =>
                 println("Bye!")
@@ -54,3 +61,4 @@ case class TUI():
                 }
         }
     }
+    override def update: Unit = println()
