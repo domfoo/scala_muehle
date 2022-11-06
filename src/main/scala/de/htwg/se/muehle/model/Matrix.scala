@@ -79,10 +79,10 @@ case class Matrix(matrix: Vector[Vector[Stone]]):
         if (getCell(x, y) == Stone.Empty) true else false
     }
     def setStone(x: Int, y: Int, stone: Stone): Matrix = {
-        if (checkIfEmpty(x, y))
+        if (isValidCell(x, y) && checkIfEmpty(x, y))
             replaceCell(x, y, stone)
         else
-            println("\nError: Cell is already occupied!")
+            println("Error: Cell is already occupied!")
             this
     }
     def checkMove(old_x: Int, old_y: Int, new_x: Int, new_y: Int): Boolean = {
@@ -100,7 +100,7 @@ case class Matrix(matrix: Vector[Vector[Stone]]):
             // set old cell to Stone.Empty and move stone to new cell
             copy().removeStone(old_x, old_y).replaceCell(new_x, new_y, moving_stone)
         else
-            println("\nError: Old cell is empty, new cell is already occupied or new cell is not a neighbour of old cell!")
+            println("Error: Old cell is empty, new cell is already occupied or new cell is not a neighbour of old cell!")
             this
     }
     def removeStone(x: Int, y: Int): Matrix = {
