@@ -100,7 +100,7 @@ case class Matrix(matrix: Vector[Vector[Stone]]):
             // set old cell to Stone.Empty and move stone to new cell
             copy().removeStone(old_x, old_y).replaceCell(new_x, new_y, moving_stone)
         else
-            println("\nError: Old cell is empty, new cell is already occupied or new cell is not a neighbour of old cell!")
+            println("Error: Old cell is empty, new cell is already occupied or new cell is not a neighbour of old cell!")
             this
     }
     def removeStone(x: Int, y: Int): Matrix = {

@@ -20,12 +20,13 @@ case class TUI():
             handleInput(readLine)
             println(field.toString)
     }
-    def handleInput(input: String): Unit = {
+    def handleInput(input: String): Option[Matrix] = {
         // example: 'set 24X' <=> cmd="set", args=["2","4","X"]
         input match {
-            case "q" =>
+            /**case "q" =>
                 println("Bye!")
                 System.exit(0)
+                None*/
             case _ =>
                 val command: Array[String] = input.split(" ")
                 val cmd: String = command(0)
@@ -35,18 +36,21 @@ case class TUI():
                         val x = args(0).asDigit
                         val y = args(1).asDigit
                         val stone =
-                            if (args(2).equals('X') || args(2).equals('x')) Stone.X
-                            else if (args(2).equals('O') || args(2).equals('o')) Stone.O
+                            if (args(2).equals('X')) Stone.X
+                            else if (args(2).equals('O')) Stone.O
                             else Stone.Empty
                         field = field.setStone(x, y, stone)
+                        Some(field)
                     case "move" =>
                         val old_x = args(0).asDigit
                         val old_y = args(1).asDigit
                         val new_x = args(2).asDigit
                         val new_y = args(3).asDigit
                         field = field.moveStone(old_x, old_y, new_x, new_y)
+                        Some(field)
                     case _ =>
                         println(s"Unvalid command: ${input}")
+                        None
                 }
         }
     }
