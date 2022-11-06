@@ -22,6 +22,7 @@ class PlayerSpec extends AnyWordSpec {
                 val player3 = Player("Tom")
                 player.equals(player2) should be(true)
                 player.equals(player3) should be(false)
+                player.equals(3) should be(false)
             }
         }
     }
