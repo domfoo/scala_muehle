@@ -79,7 +79,7 @@ case class Matrix(matrix: Vector[Vector[Stone]]):
         if (getCell(x, y) == Stone.Empty) true else false
     }
     def setStone(x: Int, y: Int, stone: Stone): Matrix = {
-        if (checkIfEmpty(x, y))
+        if (isValidCell(x, y) && checkIfEmpty(x, y))
             replaceCell(x, y, stone)
         else
             println("\nError: Cell is already occupied!")
