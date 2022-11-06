@@ -82,7 +82,7 @@ case class Matrix(matrix: Vector[Vector[Stone]]):
         if (isValidCell(x, y) && checkIfEmpty(x, y))
             replaceCell(x, y, stone)
         else
-            println("\nError: Cell is already occupied!")
+            println("Error: Cell is already occupied!")
             this
     }
     def checkMove(old_x: Int, old_y: Int, new_x: Int, new_y: Int): Boolean = {
