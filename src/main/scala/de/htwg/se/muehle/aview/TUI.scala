@@ -14,9 +14,9 @@ class TUI(controller: Controller) extends Observer:
     def run = {
         println("---WELCOME TO MILL!---\n" +
                 "First, please enter the name of the first player: \n" +
-                controller.addPlayerOne(readLine) +
+                //controller.addPlayerOne(readLine) +
                 "Now, please enter the second player's name: \n" +
-                controller.addPlayerTwo(readLine) +
+                //controller.addPlayerTwo(readLine) +
                 "Type 'set 33X' to place a stone X at the third row and third column.\n" +
                 "Type 'move 2223' to move a stone from (row=2,col=2) to (row=2,col=3).\n" +
                 field)
@@ -30,10 +30,10 @@ class TUI(controller: Controller) extends Observer:
     }
     def handleInput(input: String): Option[Matrix] = {
         input match {
-            /**case "q" =>
+            case "q" =>
                 println("Bye!")
                 System.exit(0)
-                None*/
+                None
             case _ =>
                 val command: Array[String] = input.split(" ")
                 val cmd: String = command(0)
