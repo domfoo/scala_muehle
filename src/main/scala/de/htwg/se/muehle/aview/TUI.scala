@@ -30,10 +30,10 @@ class TUI(controller: Controller) extends Observer:
     }
     def handleInput(input: String): Option[Matrix] = {
         input match {
-            /**case "q" =>
+            case "q" =>
                 println("Bye!")
                 System.exit(0)
-                None*/
+                None
             case _ =>
                 val command: Array[String] = input.split(" ")
                 val cmd: String = command(0)
