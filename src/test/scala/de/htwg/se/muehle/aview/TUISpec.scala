@@ -2,6 +2,7 @@ package de.htwg.se.muehle
 package aview
 
 import aview.TUI
+import controller.Controller
 import model.Matrix
 import model.Player
 import model.Stone
@@ -17,7 +18,8 @@ class TUISpec extends AnyWordSpec {
                 tui.handleInput("q") should be(None)
             }*/
             "recognize the input 'set' as placing a stone on the game field" in {
-                val tui = TUI()
+                val controller = Controller(new Matrix(7, Stone.Empty))
+                val tui = TUI(controller)
                 val field = tui.field
                 tui.handleInput("set 99X") should be(Some(field.setStone(9, 9, Stone.X)))
                 tui.handleInput("set 00Y") should be(Some(field.setStone(0, 0, Stone.Empty)))
@@ -27,7 +29,8 @@ class TUISpec extends AnyWordSpec {
                 ))
             }
             "recognize the input 'move' as moving a stone on the game field" in {
-                val tui = TUI()
+                val controller = Controller(new Matrix(7, Stone.Empty))
+                val tui = TUI(controller)
                 val field = tui.field
                 tui.handleInput("set 00X")
                 tui.handleInput("move 0003") should be(Some(
@@ -35,7 +38,8 @@ class TUISpec extends AnyWordSpec {
                 ))
             }
             "recognize an unvalid command" in {
-                val tui = TUI()
+                val controller = Controller(new Matrix(7, Stone.Empty))
+                val tui = TUI(controller)
                 tui.handleInput("abc 123") should be(None)
             }
         }
