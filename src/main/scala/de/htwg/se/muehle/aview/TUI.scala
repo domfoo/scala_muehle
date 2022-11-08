@@ -34,7 +34,7 @@ class TUI(controller: Controller) extends Observer:
             println("Player " + controller.players(playerIndex).name + " (" + controller.players(playerIndex).stoneType + "):")
             print("> ")
             if (handleInput(readLine).isDefined) {
-                println(field.toString)
+                println(field)
                 test = !test
             }
     }
@@ -44,6 +44,9 @@ class TUI(controller: Controller) extends Observer:
             case "q" | "quit" =>
                 println("Bye!")
                 System.exit(0)
+                None
+            case "h" | "help" => 
+                println("\n" + helpMessage + "\n")
                 None
             case _ =>
                 val command: Array[String] = input.split(" ")
