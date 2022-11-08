@@ -10,12 +10,14 @@ import de.htwg.se.muehle.util.Observer
 
 class TUI(controller: Controller) extends Observer:
     val helpMessage = "Type 'set 33X' to place a stone X at the third row and third column.\nType 'move 2223' to move a stone from (row=2,col=2) to (row=2,col=3)."
+    val welcomeMessage = "---WELCOME TO MILL!---\n"
+    val exitMessage = "Bye!"
 
     controller.add(this)
     var field = controller.field
     var counter = 0
     def run = {
-        println("---WELCOME TO MILL!---\n" + "First, please enter the name of the first player:")
+        println(welcomeMessage + "First, please enter the name of the first player:")
         controller.addPlayerOne(readLine)
         
         println("Now, please enter the name of the second player:")
@@ -33,6 +35,7 @@ class TUI(controller: Controller) extends Observer:
             val playerIndex = if (!test) 1 else 0
             println("Player " + controller.players(playerIndex).name + " (" + controller.players(playerIndex).stoneType + "):")
             print("> ")
+            // change turn if the player's move was valid
             if (handleInput(readLine).isDefined) {
                 println(field)
                 test = !test
@@ -42,7 +45,7 @@ class TUI(controller: Controller) extends Observer:
     def handleInput(input: String): Option[Matrix] = {
         input match {
             case "q" | "quit" =>
-                println("Bye!")
+                println(exitMessage)
                 System.exit(0)
                 None
             case "h" | "help" => 
