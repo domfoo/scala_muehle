@@ -87,11 +87,7 @@ case class Matrix(matrix: Vector[Vector[Stone]]):
     }
     def checkMove(old_x: Int, old_y: Int, new_x: Int, new_y: Int): Boolean = {
         // check if new cell is a neighbour to old cell and if new cell is not occupied
-        if (neighbours(old_x, old_y).contains((new_x, new_y)) &&
-            getCell(new_x, new_y) == Stone.Empty)
-            true
-        else
-            false
+        (neighbours(old_x, old_y).contains((new_x, new_y)) && getCell(new_x, new_y) == Stone.Empty)
     }
     def moveStone(old_x: Int, old_y: Int, new_x: Int, new_y: Int): Matrix = {
         val moving_stone = getCell(old_x, old_y)

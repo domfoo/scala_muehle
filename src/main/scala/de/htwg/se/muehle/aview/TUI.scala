@@ -22,12 +22,14 @@ class TUI(controller: Controller) extends Observer:
                 field)
         gameLoop()
     }
+
     def gameLoop(): Unit = {
         while (true)
             print("> ")
             handleInput(readLine)
             println(field.toString)
     }
+
     def handleInput(input: String): Option[Matrix] = {
         input match {
             case "q" =>
@@ -61,4 +63,5 @@ class TUI(controller: Controller) extends Observer:
                 }
         }
     }
-    override def update: Unit = println()
+
+    override def update: Unit = println(controller.field)
