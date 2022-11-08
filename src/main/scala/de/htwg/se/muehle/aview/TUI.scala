@@ -32,7 +32,7 @@ class TUI(controller: Controller) extends Observer:
 
     def handleInput(input: String): Option[Matrix] = {
         input match {
-            case "q" =>
+            case "q" | "quit" =>
                 println("Bye!")
                 System.exit(0)
                 None
