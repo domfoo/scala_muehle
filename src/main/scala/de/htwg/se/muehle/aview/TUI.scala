@@ -2,32 +2,41 @@ package de.htwg.se.muehle
 package aview
 
 import model.Matrix
+import model.Player
 import model.Stone
 import controller.Controller
 import scala.io.StdIn.readLine
 import de.htwg.se.muehle.util.Observer
 
 class TUI(controller: Controller) extends Observer:
+    val helpMessage = "Type 'set 33X' to place a stone X at the third row and third column.\nType 'move 2223' to move a stone from (row=2,col=2) to (row=2,col=3)."
+
     controller.add(this)
     var field = controller.field
     var counter = 0
     def run = {
-        println("---WELCOME TO MILL!---\n" +
-                "First, please enter the name of the first player: \n" +
-                //controller.addPlayerOne(readLine) +
-                "Now, please enter the second player's name: \n" +
-                //controller.addPlayerTwo(readLine) +
-                "Type 'set 33X' to place a stone X at the third row and third column.\n" +
-                "Type 'move 2223' to move a stone from (row=2,col=2) to (row=2,col=3).\n" +
-                field)
+        println("---WELCOME TO MILL!---\n" + "First, please enter the name of the first player:")
+        controller.addPlayerOne(readLine)
+        
+        println("Now, please enter the name of the second player:")
+        controller.addPlayerTwo(readLine)
+
+        println(helpMessage)
+        println(field)
+        
         gameLoop()
     }
 
     def gameLoop(): Unit = {
+        var test = true
         while (true)
+            val playerIndex = if (!test) 1 else 0
+            println("Player " + controller.players(playerIndex).name + " (" + controller.players(playerIndex).stoneType + "):")
             print("> ")
-            handleInput(readLine)
-            println(field.toString)
+            if (handleInput(readLine).isDefined) {
+                println(field.toString)
+                test = !test
+            }
     }
 
     def handleInput(input: String): Option[Matrix] = {
@@ -58,7 +67,7 @@ class TUI(controller: Controller) extends Observer:
                         field = field.moveStone(old_x, old_y, new_x, new_y)
                         Some(field)
                     case _ =>
-                        println(s"Unvalid command: ${input}")
+                        println(s"invalid command: ${input}")
                         None
                 }
         }
