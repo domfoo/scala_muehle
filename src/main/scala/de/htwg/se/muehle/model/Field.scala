@@ -1,6 +1,7 @@
 package de.htwg.se.muehle.model
 
 import scala.collection.immutable.SortedMap
+import scala.languageFeature.postfixOps
 
 // size is the number of size of the mill field. Must be bigger than 0
 case class Field(cells: SortedMap[Int, Stone]):
@@ -52,29 +53,22 @@ case class Field(cells: SortedMap[Int, Stone]):
     val size = cells.size / 8
     val fieldRange = (1 to size * 8)
     
-    def isEmpty(position: Int): Boolean =
-        cells(position) == Stone.Empty
-
     def replaceCell(position: Int, stone: Stone): Field =
         Field(cells.updated(position, stone))
         
-    def removeStone(position: Int): Field =
+    def cleanCell(position: Int): Field =
         replaceCell(position, Stone.Empty)
-            
-    def isMovable(oldPosition: Int, newPosition: Int): Boolean =
-        neighbours(oldPosition).contains(newPosition) && cells(newPosition) == Stone.Empty && cells(oldPosition) != Stone.Empty
-        
-    def setStone(position: Int, stone: Stone): Option[Field] = 
-        if (fieldRange.contains(position) && isEmpty(position))
-            Some(replaceCell(position, stone))
-        else 
-            None
+    
+    def isEmptyCell(position: Int): Boolean =
+        cells(position) == Stone.Empty
 
-    def moveStone(oldPosition: Int, newPosition: Int): Option[Field] =
-        if (isMovable(oldPosition, newPosition))
-            Some(removeStone(oldPosition).replaceCell(newPosition, cells(oldPosition)))
-        else
-            None
+    def isMovableToPosition(oldPosition: Int, newPosition: Int): Boolean =
+        neighbours(oldPosition).contains(newPosition) && isEmptyCell(newPosition) && cells(oldPosition) != Stone.Empty
+
+    def execMove(stone: Stone, oldPosition: Option[Int], newPosition: Int): Field =
+        oldPosition match
+            case Some(n) => cleanCell(n).replaceCell(newPosition, stone)
+            case None => replaceCell(newPosition, stone)
 
     def line(i: Int): String = 
         "|   " * (size - 1 - i ) + "#" + "-" * (4 * i + 3) + "#" + "-" * (4 * i + 3) + "#" + "   |" * (size - 1 - i ) + eol
@@ -91,4 +85,3 @@ case class Field(cells: SortedMap[Int, Stone]):
         if (size < 1) return "" + eol
         (fieldPlaceholder().split("#").zipAll(cells.values,"","") flatMap { case (a, b) => Seq(a, b) }).mkString("")
     }
-
