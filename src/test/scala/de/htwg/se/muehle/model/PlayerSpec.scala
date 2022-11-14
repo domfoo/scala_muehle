@@ -18,7 +18,7 @@ class PlayerSpec extends AnyWordSpec {
                 player.stones should be(9)
             }
             "have a string representation" in {
-                player.toString should be("Name: Max, stone type: X, stones left: 9")
+                player.toString should be("Max")
             }
             "equal a player with same name and number of stones" in {
                 val player2 = Player("Max", Stone.X)
