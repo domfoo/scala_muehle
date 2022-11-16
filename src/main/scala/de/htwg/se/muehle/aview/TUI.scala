@@ -1,64 +1,81 @@
 package de.htwg.se.muehle
 package aview
 
-import model.Matrix
+import model.Field
+import model.Move
+import model.Player
 import model.Stone
 import controller.Controller
+import util.Observer
 import scala.io.StdIn.readLine
-import de.htwg.se.muehle.util.Observer
+import scala.util.Try
 
 class TUI(controller: Controller) extends Observer:
     controller.add(this)
-    var field = controller.field
-    var counter = 0
+    val eol = sys.props("line.separator")
+    val welcomeMessage = "---WELCOME TO MILL!---"
+    val helpMessage = 
+        "Type 'set 3' to place a stone on the third position." + eol +
+        "Type 'move 2 3' to move a stone from position 2 to position 3." + eol +
+        "Type 'h' or 'help' for this help message." + eol +
+        "Type 'q' or 'quit' to close the game." 
+    val wrongInputMessage = "Invalid command. Please use 'help' to see available commands."
+    val exitMessage = "Bye!"
+
+
     def run = {
-        println("---WELCOME TO MILL!---\n" +
-                "First, please enter the name of the first player: \n" +
-                //controller.addPlayerOne(readLine) +
-                "Now, please enter the second player's name: \n" +
-                //controller.addPlayerTwo(readLine) +
-                "Type 'set 33X' to place a stone X at the third row and third column.\n" +
-                "Type 'move 2223' to move a stone from (row=2,col=2) to (row=2,col=3).\n" +
-                field)
-        gameLoop()
+        println(welcomeMessage + eol + "First, please enter the name of the first player:")
+        controller.player1 = Player(readLine, Stone.X)
+        
+        println(eol + "Now, please enter the name of the second player:")
+        controller.player2 = Player(readLine, Stone.O)
+
+        println(eol + helpMessage)
+        println(controller.field.fieldNumberOverview + eol)
+        update
+        
+        gameLoop(controller.player1)
     }
-    def gameLoop(): Unit = {
-        while (true)
-            print("> ")
-            handleInput(readLine)
-            println(field.toString)
+
+    def gameLoop(player: Player): Unit =
+        println("Player " + player.name + " (" + player.stoneType + "):")
+        print("> ")
+        handleInput(readLine, player.stoneType) match
+            case Left(move) => 
+                controller.doAndPublish(controller.execMove, move)
+                gameLoop(controller.nextPlayer(player))
+            case Right(command) if command == "h" => gameLoop(player)
+            case Right(command) if command == "q" => 
+            case _ => gameLoop(player)
+        
+    /// returns a Move when the input is a valid move or the first element of the input list as a String which can be used handle the help and quit command
+    def handleInput(input: String, stone: Stone): Either[Move, String] = {
+        val inputList = input.split(" ").toList
+        inputList match
+            case "q" :: Nil | "quit" :: Nil =>
+                println(exitMessage)
+                Right(inputList.head)
+            case "h" :: Nil | "help" :: Nil => 
+                println(eol + helpMessage)
+                println(controller.field.fieldNumberOverview + eol)
+                Right(inputList.head)
+            case "set" :: newPos :: Nil if (
+                Try(newPos.toInt).isSuccess && 
+                controller.field.fieldRange.contains(newPos.toInt)) &&
+                controller.field.isEmptyCell(newPos.toInt) 
+                =>
+                Left(Move(stone, None, newPos.toInt))
+            case "move" :: oldPos :: newPos :: Nil if (
+                Try(oldPos.toInt).isSuccess && 
+                Try(newPos.toInt).isSuccess && 
+                controller.field.fieldRange.contains(oldPos.toInt) && 
+                controller.field.fieldRange.contains(newPos.toInt)) && 
+                controller.field.isMovableToPosition(oldPos.toInt, newPos.toInt)
+                =>
+                Left(Move(stone, Some(oldPos.toInt), newPos.toInt))
+            case _ => 
+                println(eol + wrongInputMessage + eol)
+                Right(inputList.head)
     }
-    def handleInput(input: String): Option[Matrix] = {
-        input match {
-            case "q" =>
-                println("Bye!")
-                System.exit(0)
-                None
-            case _ =>
-                val command: Array[String] = input.split(" ")
-                val cmd: String = command(0)
-                val args: String = command(1)
-                cmd match {
-                    case "set" =>
-                        val x = args(0).asDigit
-                        val y = args(1).asDigit
-                        val stone =
-                            if (args(2).equals('X')) Stone.X
-                            else if (args(2).equals('O')) Stone.O
-                            else Stone.Empty
-                        field = field.setStone(x, y, stone)
-                        Some(field)
-                    case "move" =>
-                        val old_x = args(0).asDigit
-                        val old_y = args(1).asDigit
-                        val new_x = args(2).asDigit
-                        val new_y = args(3).asDigit
-                        field = field.moveStone(old_x, old_y, new_x, new_y)
-                        Some(field)
-                    case _ =>
-                        println(s"Unvalid command: ${input}")
-                        None
-                }
-        }
-    }
-    override def update: Unit = println()
+
+    override def update: Unit = println(controller.field)
