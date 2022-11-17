@@ -1,3 +1,4 @@
+[![Build Status](https://github.com/domfoo/scala_muehle/actions/workflows/scala.yml/badge.svg)](https://github.com/domfoo/scala_muehle/actions/workflows/scala.yml)
 [![Coverage Status](https://coveralls.io/repos/github/domfoo/scala_muehle/badge.svg?branch=master)](https://coveralls.io/github/domfoo/scala_muehle?branch=master)
 
 # scala_muehle
