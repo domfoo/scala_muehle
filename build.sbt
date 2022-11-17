@@ -1,5 +1,7 @@
 val scala3Version = "3.2.0"
 
+import org.scoverage.coveralls.Imports.CoverallsKeys._
+
 lazy val root = project
   .in(file("."))
   .settings(
@@ -12,3 +14,4 @@ lazy val root = project
     libraryDependencies += "org.scalactic" %% "scalactic" % "3.2.14",
     libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.14" % "test"
   )
+  .enablePlugins(CoverallsPlugin)
