@@ -22,13 +22,14 @@ class TUI(controller: Controller) extends Observer:
     val wrongInputMessage = "Invalid command. Please use 'help' to see available commands."
     val exitMessage = "Bye!"
 
-
     def run = {
         println(welcomeMessage + eol + "First, please enter the name of the first player:")
-        controller.player1 = Player(readLine, Stone.X)
+        val player1Name = readLine()
         
         println(eol + "Now, please enter the name of the second player:")
-        controller.player2 = Player(readLine, Stone.O)
+        val player2Name = readLine()
+
+        controller.initPlayers(player1Name, player2Name)
 
         println(eol + helpMessage)
         println(controller.field.fieldNumberOverview + eol)
