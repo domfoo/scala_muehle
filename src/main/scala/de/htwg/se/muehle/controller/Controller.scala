@@ -14,6 +14,10 @@ class Controller(var field: Field) extends Observable:
     def nextPlayer(oldPlayer: Player): Player =
         if (oldPlayer == player1) player2 else player1
 
+    def initPlayers(player1: String, player2: String) =
+        this.player1 = Player(player1, Stone.X)
+        this.player2 = Player(player2, Stone.O)
+
     def doAndPublish(doThis: Move => Field, move: Move): Unit =
         field = doThis(move)
         notifyObservers
