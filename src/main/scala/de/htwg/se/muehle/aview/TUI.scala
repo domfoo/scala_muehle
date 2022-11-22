@@ -35,7 +35,7 @@ class TUI(controller: Controller) extends Observer:
         println(controller.field.fieldNumberOverview + eol)
         update
         
-        gameLoop(controller.player1)
+        gameLoop(controller.player1.get)
     }
 
     def gameLoop(player: Player): Unit =

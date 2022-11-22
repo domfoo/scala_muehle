@@ -14,8 +14,8 @@ class ControllerSpec extends AnyWordSpec {
         val controller = Controller(new Field())
         controller.initPlayers("Tom", "Max")
         "switch from players" in {
-            controller.nextPlayer(controller.player1) should be(controller.player2)
-            controller.nextPlayer(controller.player2) should be(controller.player1)
+            controller.nextPlayer(controller.player1.get) should be(controller.player2.get)
+            controller.nextPlayer(controller.player2.get) should be(controller.player1.get)
         }
     }
 }
