@@ -12,7 +12,7 @@ import org.scalatest.matchers.should.Matchers._
 
 class TUISpec extends AnyWordSpec {
     "The TUI" should {
-        val controller = Controller(new Field)
+        val controller = Controller(Field())
         val tui = TUI(controller)
         "reading and handling input" should {
             "recognize the input 'set 2' as setting the stone X to cell 2" in {

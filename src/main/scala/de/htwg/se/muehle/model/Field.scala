@@ -84,3 +84,7 @@ case class Field(cells: SortedMap[Int, Stone]):
         if (size < 1) return "" + eol
         (fieldPlaceholder().split("#").zipAll(cells.values,"","") flatMap { case (a, b) => Seq(a, b) }).mkString("")
     }
+
+object Field:
+    def apply(cells: SortedMap[Int, Stone]): Field = new Field(cells)
+    def apply(size: Int = 3): Field = new Field(SortedMap((1 to size * 8).map(k => (k -> Stone.Empty)).toSeq:_*))

@@ -6,7 +6,7 @@ import model.Stone
 import model.Field
 
 @main def run: Unit =
-    val field = new Field()
+    val field = Field()
     val controller = Controller(field)
     val tui = TUI(controller)
     tui.run
