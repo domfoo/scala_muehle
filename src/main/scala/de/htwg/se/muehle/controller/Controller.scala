@@ -21,4 +21,4 @@ class Controller(var field: Field, var player1: Option[Player] = None, var playe
         notifyObservers
 
     def execMove(move: Move): Field =
-        field.execMove(move.stone, move.oldPosition, move.newPosition)
+        field.execMove(move)

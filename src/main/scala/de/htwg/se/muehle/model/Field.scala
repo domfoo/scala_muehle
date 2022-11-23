@@ -1,7 +1,6 @@
 package de.htwg.se.muehle.model
 
 import scala.collection.immutable.SortedMap
-import scala.languageFeature.postfixOps
 
 // size is the number of size of the mill field. Must be bigger than 0
 case class Field(cells: SortedMap[Int, Stone]):
@@ -65,10 +64,10 @@ case class Field(cells: SortedMap[Int, Stone]):
     def isMovableToPosition(oldPosition: Int, newPosition: Int): Boolean =
         neighbours(oldPosition).contains(newPosition) && isEmptyCell(newPosition) && cells(oldPosition) != Stone.Empty
 
-    def execMove(stone: Stone, oldPosition: Option[Int], newPosition: Int): Field =
-        oldPosition match
-            case Some(n) => cleanCell(n).replaceCell(newPosition, stone)
-            case None => replaceCell(newPosition, stone)
+    def execMove(move: Move): Field =
+        move.oldPosition match
+            case Some(n) => cleanCell(n).replaceCell(move.newPosition, move.stone)
+            case None => replaceCell(move.newPosition, move.stone)
 
     def line(i: Int): String = 
         "|   " * (size - 1 - i ) + "#" + "-" * (4 * i + 3) + "#" + "-" * (4 * i + 3) + "#" + "   |" * (size - 1 - i ) + eol
