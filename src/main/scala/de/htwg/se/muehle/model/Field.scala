@@ -4,7 +4,6 @@ import scala.collection.immutable.SortedMap
 
 // size is the number of size of the mill field. Must be bigger than 0
 case class Field(cells: SortedMap[Int, Stone]):
-    def this(size: Int = 3) = this(SortedMap((1 to size * 8).map(k => (k -> Stone.Empty)).toSeq:_*))
 
     // a Map of all neighbours for each cell
     val neighbours = Map(
