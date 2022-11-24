@@ -6,6 +6,7 @@ import model.Move
 import model.Player
 import model.Stone
 import controller.Controller
+import util.{Player1State, Player2State}
 import util.Observer
 import scala.io.StdIn.readLine
 import scala.util.Try
@@ -44,7 +45,7 @@ class TUI(controller: Controller) extends Observer:
         handleInput(readLine, player.stoneType) match
             case Left(move) => 
                 controller.doAndPublish(controller.execMove, move)
-                gameLoop(controller.nextPlayer(player))
+                gameLoop(controller.nextPlayer())
             case Right(command) if command == "h" => gameLoop(player)
             case Right(command) if command == "q" => 
             case _ => gameLoop(player)
