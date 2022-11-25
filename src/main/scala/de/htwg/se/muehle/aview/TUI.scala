@@ -2,7 +2,7 @@ package de.htwg.se.muehle
 package aview
 
 import model.Field
-import model.Move
+import model.{PlayStrategy, Put, Move}
 import model.Player
 import model.Stone
 import controller.Controller
@@ -43,15 +43,15 @@ class TUI(controller: Controller) extends Observer:
         println("Player " + player.name + " (" + player.stoneType + "):")
         print("> ")
         handleInput(readLine, player.stoneType) match
-            case Left(move) => 
-                controller.doAndPublish(controller.execMove, move)
+            case Left(strategy) => 
+                controller.executeStrategy(strategy)
                 gameLoop(controller.nextPlayer())
             case Right(command) if command == "h" => gameLoop(player)
             case Right(command) if command == "q" => 
             case _ => gameLoop(player)
         
     /// returns a Move when the input is a valid move or the first element of the input list as a String which can be used handle the help and quit command
-    def handleInput(input: String, stone: Stone): Either[Move, String] = {
+    def handleInput(input: String, stone: Stone): Either[PlayStrategy, String] = {
         val inputList = input.split(" ").toList
         inputList match
             case "q" :: Nil | "quit" :: Nil =>
@@ -66,7 +66,7 @@ class TUI(controller: Controller) extends Observer:
                 controller.field.fieldRange.contains(newPos.toInt)) &&
                 controller.field.isEmptyCell(newPos.toInt) 
                 =>
-                Left(Move(stone, None, newPos.toInt))
+                Left(Put(newPos.toInt, stone))
             case "move" :: oldPos :: newPos :: Nil if (
                 Try(oldPos.toInt).isSuccess && 
                 Try(newPos.toInt).isSuccess && 
@@ -74,7 +74,7 @@ class TUI(controller: Controller) extends Observer:
                 controller.field.fieldRange.contains(newPos.toInt)) && 
                 controller.field.isMovableToPosition(oldPos.toInt, newPos.toInt)
                 =>
-                Left(Move(stone, Some(oldPos.toInt), newPos.toInt))
+                Left(Move(oldPos.toInt, newPos.toInt, stone))
             case _ => 
                 println(eol + wrongInputMessage + eol)
                 Right(inputList.head)

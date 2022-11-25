@@ -4,7 +4,7 @@ package aview
 import aview.TUI
 import controller.Controller
 import model.Field
-import model.Move
+import model.{PlayStrategy, Put, Move}
 import model.Player
 import model.Stone
 import org.scalatest.wordspec.AnyWordSpec
@@ -16,12 +16,14 @@ class TUISpec extends AnyWordSpec {
         val tui = TUI(controller)
         "reading and handling input" should {
             "recognize the input 'set 2' as setting the stone X to cell 2" in {
-                tui.handleInput("set 2", Stone.X) should be(Left(Move(Stone.X, None, 2)))
-                controller.doAndPublish(controller.execMove, Move(Stone.X, None, 2))
+                val strat = Put(2, Stone.X)
+                tui.handleInput("set 2", Stone.X) should be(Left(strat))
+                controller.executeStrategy(strat)
             }
             "recognize the input 'move 2 3' as moving the stone X from cell 2 to cell 3" in {
-                tui.handleInput("move 2 3", Stone.X) should be(Left(Move(Stone.X, Some(2), 3)))
-                controller.doAndPublish(controller.execMove, Move(Stone.X, Some(2), 3))
+                val strat = Move(2, 3, Stone.X)
+                tui.handleInput("move 2 3", Stone.X) should be(Left(strat))
+                controller.executeStrategy(strat)
             }
             "recognize invalid input" in {
                 tui.handleInput("hello world", Stone.X) should be(Right("hello"))
