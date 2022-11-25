@@ -72,7 +72,7 @@ class TUI(controller: Controller) extends Observer:
                 Try(newPos.toInt).isSuccess && 
                 controller.field.fieldRange.contains(oldPos.toInt) && 
                 controller.field.fieldRange.contains(newPos.toInt)) && 
-                controller.field.isMovableToPosition(oldPos.toInt, newPos.toInt)
+                controller.field.isMovableToPosition(oldPos.toInt, newPos.toInt, stone)
                 =>
                 Left(Move(oldPos.toInt, newPos.toInt, stone))
             case _ => 

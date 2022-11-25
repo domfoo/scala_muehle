@@ -60,8 +60,8 @@ case class Field(cells: SortedMap[Int, Stone]):
     def isEmptyCell(position: Int): Boolean =
         cells(position) == Stone.Empty
 
-    def isMovableToPosition(oldPosition: Int, newPosition: Int): Boolean =
-        neighbours(oldPosition).contains(newPosition) && isEmptyCell(newPosition) && cells(oldPosition) != Stone.Empty
+    def isMovableToPosition(oldPosition: Int, newPosition: Int, stone: Stone): Boolean =
+        neighbours(oldPosition).contains(newPosition) && isEmptyCell(newPosition) && cells(oldPosition) == stone
 /*
     def execMove(move: Move): Field =
         move.oldPosition match
