@@ -1,11 +1,9 @@
 package de.htwg.se.muehle.model
 
 import scala.collection.immutable.SortedMap
-import scala.languageFeature.postfixOps
 
 // size is the number of size of the mill field. Must be bigger than 0
 case class Field(cells: SortedMap[Int, Stone]):
-    def this(size: Int = 3) = this(SortedMap((1 to size * 8).map(k => (k -> Stone.Empty)).toSeq:_*))
 
     // a Map of all neighbours for each cell
     val neighbours = Map(
@@ -62,13 +60,13 @@ case class Field(cells: SortedMap[Int, Stone]):
     def isEmptyCell(position: Int): Boolean =
         cells(position) == Stone.Empty
 
-    def isMovableToPosition(oldPosition: Int, newPosition: Int): Boolean =
-        neighbours(oldPosition).contains(newPosition) && isEmptyCell(newPosition) && cells(oldPosition) != Stone.Empty
-
-    def execMove(stone: Stone, oldPosition: Option[Int], newPosition: Int): Field =
-        oldPosition match
-            case Some(n) => cleanCell(n).replaceCell(newPosition, stone)
-            case None => replaceCell(newPosition, stone)
+    def isMovableToPosition(oldPosition: Int, newPosition: Int, stone: Stone): Boolean =
+        neighbours(oldPosition).contains(newPosition) && isEmptyCell(newPosition) && cells(oldPosition) == stone
+/*
+    def execMove(move: Move): Field =
+        move.oldPosition match
+            case Some(n) => cleanCell(n).replaceCell(move.newPosition, move.stone)
+            case None => replaceCell(move.newPosition, move.stone)*/
 
     def line(i: Int): String = 
         "|   " * (size - 1 - i ) + "#" + "-" * (4 * i + 3) + "#" + "-" * (4 * i + 3) + "#" + "   |" * (size - 1 - i ) + eol
@@ -85,3 +83,7 @@ case class Field(cells: SortedMap[Int, Stone]):
         if (size < 1) return "" + eol
         (fieldPlaceholder().split("#").zipAll(cells.values,"","") flatMap { case (a, b) => Seq(a, b) }).mkString("")
     }
+
+object Field:
+    def apply(cells: SortedMap[Int, Stone]): Field = new Field(cells)
+    def apply(size: Int = 3): Field = new Field(SortedMap((1 to size * 8).map(k => (k -> Stone.Empty)).toSeq:_*))

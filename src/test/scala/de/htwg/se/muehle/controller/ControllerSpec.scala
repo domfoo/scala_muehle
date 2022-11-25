@@ -11,11 +11,11 @@ import org.scalatest.matchers.should.Matchers._
 
 class ControllerSpec extends AnyWordSpec {
     "A Controller" should {
-        val controller = Controller(new Field())
+        val controller = Controller(Field())
         controller.initPlayers("Tom", "Max")
         "switch from players" in {
-            controller.nextPlayer(controller.player1) should be(controller.player2)
-            controller.nextPlayer(controller.player2) should be(controller.player1)
+            controller.nextPlayer() should be(controller.player2.get)
+            controller.nextPlayer() should be(controller.player1.get)
         }
     }
 }
