@@ -18,6 +18,8 @@ class TUI(controller: Controller) extends Observer:
     val helpMessage = 
         "Type 'set 3' to place a stone on the third position." + eol +
         "Type 'move 2 3' to move a stone from position 2 to position 3." + eol +
+        "Type 'undo' to undo your last command." + eol +
+        "Type 'redo' to redo your last command." + eol +
         "Type 'h' or 'help' for this help message." + eol +
         "Type 'q' or 'quit' to close the game." 
     val wrongInputMessage = "Invalid command. Please use 'help' to see available commands."
@@ -46,6 +48,12 @@ class TUI(controller: Controller) extends Observer:
             case Left(strategy) => 
                 controller.executeStrategy(strategy)
                 gameLoop(controller.nextPlayer())
+            case Right(command) if command == "undo" => 
+                controller.undo()
+                gameLoop(player)
+            case Right(command) if command == "redo" => 
+                controller.redo()
+                gameLoop(player)
             case Right(command) if command == "h" => gameLoop(player)
             case Right(command) if command == "q" => 
             case _ => gameLoop(player)
@@ -61,6 +69,8 @@ class TUI(controller: Controller) extends Observer:
                 println(eol + helpMessage)
                 println(controller.field.fieldNumberOverview + eol)
                 Right(inputList.head)
+            case "redo" :: Nil => Right(inputList.head)
+            case "undo" :: Nil => Right(inputList.head)
             case "set" :: newPos :: Nil if (
                 Try(newPos.toInt).isSuccess && 
                 controller.field.fieldRange.contains(newPos.toInt)) &&
