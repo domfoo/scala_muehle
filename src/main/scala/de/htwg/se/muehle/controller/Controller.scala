@@ -10,6 +10,9 @@ import util.{ControllerState, Player1State, Player2State}
 import de.htwg.se.muehle.util.Observable
 
 class Controller(var field: Field, var player1: Option[Player] = None, var player2: Option[Player] = None, var state: ControllerState = Player1State()) extends Observable:
+    private var undoStack: List[PlayStrategy] = Nil
+    private var redoStack: List[PlayStrategy] = Nil
+    
     /// changes the player state and returns the new active player 
     def nextPlayer(): Player =
         state match
@@ -23,14 +26,27 @@ class Controller(var field: Field, var player1: Option[Player] = None, var playe
     def initPlayers(player1: String, player2: String) =
         this.player1 = Some(Player(player1, Stone.X))
         this.player2 = Some(Player(player2, Stone.O))
-/*
-    def doAndPublish(doThis: Move => Field, move: Move): Unit =
-        field = doThis(move)
+
+    def executeStrategy(strategy: PlayStrategy): Unit =
+        undoStack = strategy :: undoStack
+        field = strategy.execute(field)
         notifyObservers
 
-    def execMove(move: Move): Field =
-        field.execMove(move)*/
-    
-    def executeStrategy(strategy: PlayStrategy): Unit =
-        field = strategy.execute(field)
+    def undo(): Unit = 
+        undoStack match
+            case Nil => 
+            case head :: stack => 
+                println("some undo stack")
+                field = head.undo(field)
+                undoStack = stack
+                redoStack = head :: redoStack
+        notifyObservers
+            
+    def redo(): Unit = 
+        redoStack match
+            case Nil =>
+            case head :: stack =>
+                field = head.redo(field)
+                redoStack = stack
+                undoStack = head :: undoStack
         notifyObservers
