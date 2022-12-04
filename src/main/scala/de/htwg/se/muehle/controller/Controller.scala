@@ -2,7 +2,6 @@ package de.htwg.se.muehle
 package controller
 
 import model.Field
-//import model.Move
 import model.Player
 import model.Stone
 import model.{PlayStrategy, Move, Put}
@@ -13,7 +12,7 @@ class Controller(var field: Field, var player1: Option[Player] = None, var playe
     private var undoStack: List[PlayStrategy] = Nil
     private var redoStack: List[PlayStrategy] = Nil
 
-    /// changes the player state and returns the new active player
+    // changes the player state and returns the new active player
     def nextPlayer(): Player =
         state match
             case first: Player1State =>
