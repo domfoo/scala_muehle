@@ -2,7 +2,7 @@ package de.htwg.se.muehle.model
 
 import scala.collection.immutable.SortedMap
 
-// size is the number of size of the mill field. Must be bigger than 0
+// size is the number of rings of the mill field (must be greater than zero)
 case class Field(cells: SortedMap[Int, Stone]):
 
     // a Map of all neighbours for each cell
@@ -50,13 +50,13 @@ case class Field(cells: SortedMap[Int, Stone]):
 
     val size = cells.size / 8
     val fieldRange = (1 to size * 8)
-    
+
     def replaceCell(position: Int, stone: Stone): Field =
         Field(cells.updated(position, stone))
-        
+
     def cleanCell(position: Int): Field =
         replaceCell(position, Stone.Empty)
-    
+
     def isEmptyCell(position: Int): Boolean =
         cells(position) == Stone.Empty
 
@@ -68,11 +68,11 @@ case class Field(cells: SortedMap[Int, Stone]):
             case Some(n) => cleanCell(n).replaceCell(move.newPosition, move.stone)
             case None => replaceCell(move.newPosition, move.stone)*/
 
-    def line(i: Int): String = 
+    def line(i: Int): String =
         "|   " * (size - 1 - i ) + "#" + "-" * (4 * i + 3) + "#" + "-" * (4 * i + 3) + "#" + "   |" * (size - 1 - i ) + eol
-    def space(i: Int): String = 
+    def space(i: Int): String =
         "|   " * (size - 1 - i ) + "|" + " " * (4 * i + 3) + (if (i == 0) " " else "|") + " " * (4 * i + 3) + "|" + "   |" * (size - 1 - i ) + eol
-    def middle(): String = 
+    def middle(): String =
         "#---" * (size - 1) + "#" + " " * 7 + "#" + "---#" * (size - 1) + eol
     def fieldPlaceholder(): String =
         ((size - 1) to 0 by -1).map((x: Int) => line(x) + space(x)).mkString("") +
