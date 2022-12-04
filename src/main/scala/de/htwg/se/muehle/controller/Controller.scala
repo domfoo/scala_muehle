@@ -12,11 +12,11 @@ import de.htwg.se.muehle.util.Observable
 class Controller(var field: Field, var player1: Option[Player] = None, var player2: Option[Player] = None, var state: ControllerState = Player1State()) extends Observable:
     private var undoStack: List[PlayStrategy] = Nil
     private var redoStack: List[PlayStrategy] = Nil
-    
-    /// changes the player state and returns the new active player 
+
+    /// changes the player state and returns the new active player
     def nextPlayer(): Player =
         state match
-            case first: Player1State => 
+            case first: Player1State =>
                 state = Player2State()
                 player2.get
             case second: Player2State =>
@@ -32,17 +32,17 @@ class Controller(var field: Field, var player1: Option[Player] = None, var playe
         field = strategy.execute(field)
         notifyObservers
 
-    def undo(): Unit = 
+    def undo(): Unit =
         undoStack match
-            case Nil => 
-            case head :: stack => 
+            case Nil =>
+            case head :: stack =>
                 println("some undo stack")
                 field = head.undo(field)
                 undoStack = stack
                 redoStack = head :: redoStack
         notifyObservers
-            
-    def redo(): Unit = 
+
+    def redo(): Unit =
         redoStack match
             case Nil =>
             case head :: stack =>
