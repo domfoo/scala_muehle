@@ -73,16 +73,16 @@ class TUI(controller: Controller) extends Observer:
             case "undo" :: Nil => Right(inputList.head)
             case "set" :: newPos :: Nil if (
                 Try(newPos.toInt).isSuccess &&
-                controller.field.fieldRange.contains(newPos.toInt)) &&
-                controller.field.isEmptyCell(newPos.toInt)
+                controller.field.fieldRange.contains(newPos.toInt) &&
+                controller.field.isEmptyCell(newPos.toInt))
                 =>
                 Left(Put(newPos.toInt, stone))
             case "move" :: oldPos :: newPos :: Nil if (
                 Try(oldPos.toInt).isSuccess &&
                 Try(newPos.toInt).isSuccess &&
                 controller.field.fieldRange.contains(oldPos.toInt) &&
-                controller.field.fieldRange.contains(newPos.toInt)) &&
-                controller.field.isMovableToPosition(oldPos.toInt, newPos.toInt, stone)
+                controller.field.fieldRange.contains(newPos.toInt) &&
+                controller.field.isMovableToPosition(oldPos.toInt, newPos.toInt, stone))
                 =>
                 Left(Move(oldPos.toInt, newPos.toInt, stone))
             case _ =>
