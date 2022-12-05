@@ -28,6 +28,7 @@ class SwingGUI(controller: Controller) extends Frame with Observer:
       })
       contents += new Separator
       contents += new MenuItem(Action("Quit") {
+        println("Bye!")
         System.exit(0)
       })
     }
@@ -41,21 +42,19 @@ class SwingGUI(controller: Controller) extends Frame with Observer:
       })
     }
   }
-
-  contents = new BorderPanel {
-    add(new Label("Welcome to Nine Men's Morris".toUpperCase()), BorderPanel.Position.North)
-    add(new CellPanel(), BorderPanel.Position.Center)
-  }
+  contents = contentPanel
 
   pack()
   centerOnScreen()
   open()
 
+  def contentPanel = new BorderPanel {
+    add(new Label("Welcome to Nine Men's Morris".toUpperCase()), BorderPanel.Position.North)
+    add(new CellPanel(), BorderPanel.Position.Center)
+  }
+
   def update: Unit =
-    // TODO: effizientere Lösung finden anstatt jedes mal ein neues Frame zu erzeugen
-    this.dispose()
-    new SwingGUI(controller)
-    visible = true
+    contents = contentPanel
 
   class CellPanel() extends GridPanel(7, 7):
     border = EmptyBorder(20,20,20,20)
