@@ -78,11 +78,16 @@ class SwingGUI(controller: Controller) extends Frame with Observer:
     listenTo(mouse.clicks)
     reactions += {
       case ButtonClicked(button) =>
+        if (Try(pos).isSuccess &&
+            controller.field.fieldRange.contains(pos) &&
+            controller.field.isEmptyCell(pos))
         controller.executeStrategy(Put(pos, controller.nextPlayer().stoneType))
       // TODO: move implementieren
-      /*case ButtonClicked(button) =>
-        case ButtonClicked(button2) =>
-          controller.executeStrategy(Move(, , controller.nextPlayer().stoneType))
-          button.location
-        case _ =>*/
+      case ButtonClicked(button) =>
+        /* if (Try(pos).isSuccess &&
+            Try(newPos).isSuccess &&
+            controller.field.fieldRange.contains(pos) &&
+            controller.field.fieldRange.contains(newPos) &&
+            controller.field.isMovableToPosition(pos, newPos, controller.nextPlayer().stoneType))
+        controller.executeStrategy(Move(pos, , controller.nextPlayer().stoneType)) */
     }
