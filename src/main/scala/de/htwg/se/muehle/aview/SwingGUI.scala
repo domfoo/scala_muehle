@@ -47,10 +47,16 @@ class SwingGUI(controller: Controller) extends Frame with Observer:
   pack()
   centerOnScreen()
   open()
-
+ 
+  var moveTextField = new TextField("")
+  def movePanel: GridPanel = new GridPanel(1,2) {
+          contents += new Label("Move to position (1-24): ")
+          contents += moveTextField
+        }
   def contentPanel = new BorderPanel {
     add(new Label("Welcome to Nine Men's Morris".toUpperCase()), BorderPanel.Position.North)
     add(new CellPanel(), BorderPanel.Position.Center)
+    add(movePanel, BorderPanel.Position.South)
   }
 
   def update: Unit =
@@ -76,18 +82,25 @@ class SwingGUI(controller: Controller) extends Frame with Observer:
 
   class CellButton(pos: Int, stone: String) extends Button(stone):
     listenTo(mouse.clicks)
+    listenTo(keys)
     reactions += {
+      // put a stone on the playfield
       case ButtonClicked(button) =>
-        if (Try(pos).isSuccess &&
+        /*if (textfieldMove.text == "")
+          if (
+            Try(pos).isSuccess &&
             controller.field.fieldRange.contains(pos) &&
-            controller.field.isEmptyCell(pos))
-        controller.executeStrategy(Put(pos, controller.nextPlayer().stoneType))
-      // TODO: move implementieren
-      case ButtonClicked(button) =>
-        /* if (Try(pos).isSuccess &&
+            controller.field.isEmptyCell(pos)
+          )
+          controller.executeStrategy(Put(pos, controller.nextPlayer().stoneType))
+        else
+          val newPos = textfieldMove.text.toInt
+          if (
+            Try(pos).isSuccess &&
             Try(newPos).isSuccess &&
             controller.field.fieldRange.contains(pos) &&
             controller.field.fieldRange.contains(newPos) &&
-            controller.field.isMovableToPosition(pos, newPos, controller.nextPlayer().stoneType))
-        controller.executeStrategy(Move(pos, , controller.nextPlayer().stoneType)) */
+            controller.field.isMovableToPosition(pos, newPos, controller.nextPlayer().stoneType)
+          )
+          controller.executeStrategy(Move(pos, newPos, controller.nextPlayer().stoneType))*/
     }
