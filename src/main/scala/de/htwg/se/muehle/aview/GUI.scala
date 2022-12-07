@@ -13,8 +13,9 @@ import java.awt.Dimension
 import scala.swing.Swing.EmptyBorder
 import javax.swing.SwingUtilities
 import scala.util.Try
+import javax.swing.border.EmptyBorder
 
-class SwingGUI(controller: Controller) extends Frame with Observer:
+class GUI(controller: Controller) extends Frame with Observer:
   controller.add(this)
   title = "Nine men's morris"
   preferredSize = new Dimension(800, 600)
@@ -52,9 +53,10 @@ class SwingGUI(controller: Controller) extends Frame with Observer:
 
   // singleton which makes it possible to read the input of the textfield (from CellButton)
   object MoveTextField {
-    var moveTextField = new TextField("")
+    var moveTextField = new TextField("", 2)
   }
   def movePanel: GridPanel = new GridPanel(1,2) {
+          border = Swing.EmptyBorder(0,100,0,100)
           contents += new Label("Move to position (1-24): ")
           contents += MoveTextField.moveTextField
         }
@@ -68,7 +70,7 @@ class SwingGUI(controller: Controller) extends Frame with Observer:
 
   // class for creating a panel consisting of buttons
   class CellPanel() extends GridPanel(7, 7):
-    border = EmptyBorder(20,20,20,20)
+    border = Swing.EmptyBorder(20,20,20,20)
     printField
 
     def printField: IndexedSeq[Matchable] =
