@@ -15,12 +15,10 @@ class GUISpec extends AnyWordSpec {
     "The GUI" should {
         val controller = Controller(Field())
         val gui = GUI(controller)
-        "create a frame in which you can" should {
-            "convert a string to a stone" in {
-                gui.toStone("X") should be(Stone.X)
-                gui.toStone("O") should be(Stone.O)
-                gui.toStone("+") should be(Stone.Empty)
-            }
+        "convert a string to a stone" in {
+            gui.toStone("X") should be(Stone.X)
+            gui.toStone("O") should be(Stone.O)
+            gui.toStone("+") should be(Stone.Empty)
         }
     }
 }
