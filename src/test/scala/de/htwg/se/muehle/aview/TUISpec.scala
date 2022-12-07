@@ -14,7 +14,7 @@ class TUISpec extends AnyWordSpec {
     "The TUI" should {
         val controller = Controller(Field())
         val tui = TUI(controller)
-        "reading and handling input" should {
+        "read and handle input" should {
             "recognize the input 'undo' as not undoing anything if there are no prior commands" in {
                 tui.handleInput("undo", Stone.X) should be(Right("undo"))
                 controller.undo()
