@@ -49,6 +49,9 @@ class TUISpec extends AnyWordSpec {
                 tui.handleInput("redo", Stone.X) should be(Right("redo"))
                 controller.redo()
             }
+            "recognize the input 'new' as creating a new game" in {
+                tui.handleInput("new", Stone.X) should be(Right("new"))
+            }
             "recognize invalid input" in {
                 tui.handleInput("hello world", Stone.X) should be(Right("hello"))
             }
