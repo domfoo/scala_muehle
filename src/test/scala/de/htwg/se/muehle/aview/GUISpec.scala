@@ -16,8 +16,6 @@ class GUISpec extends AnyWordSpec {
         val controller = Controller(Field())
         val gui = GUI(controller)
         "create a frame in which you can" should {
-            "set a stone" in { }
-            "move a stone" in { }
             "convert a string to a stone" in {
                 gui.toStone("X") should be(Stone.X)
                 gui.toStone("O") should be(Stone.O)
