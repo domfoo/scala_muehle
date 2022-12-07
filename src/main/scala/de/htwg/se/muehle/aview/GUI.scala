@@ -120,8 +120,8 @@ class GUI(controller: Controller) extends Frame with Observer:
         else
           println("Input has to be a number from 1 to 24!")
     }
-    def toStone(stoneAsString: String) = stoneAsString match {
-        case "X" => Stone.X
-        case "O" => Stone.O
-        case "+" => Stone.Empty
-    }
+  def toStone(stoneAsString: String) = stoneAsString match {
+      case "X" => Stone.X
+      case "O" => Stone.O
+      case "+" => Stone.Empty
+  }
