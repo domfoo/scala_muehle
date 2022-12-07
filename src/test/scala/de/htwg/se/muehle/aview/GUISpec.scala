@@ -13,12 +13,12 @@ import org.scalatest.matchers.should.Matchers._
 class GUISpec extends AnyWordSpec {
     
     "The GUI" should {
-        val controller = Controller(Field())
+        /*val controller = Controller(Field())
         val gui = GUI(controller)
         "convert a string to a stone" in {
             gui.toStone("X") should be(Stone.X)
             gui.toStone("O") should be(Stone.O)
             gui.toStone("+") should be(Stone.Empty)
-        }
+        }*/
     }
 }
