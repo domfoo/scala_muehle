@@ -17,5 +17,9 @@ class ControllerSpec extends AnyWordSpec {
             controller.nextPlayer() should be(controller.player2.get)
             controller.nextPlayer() should be(controller.player1.get)
         }
+        "create a new game" in {
+            controller.newGame()
+            controller.field should be(Field())
+        }
     }
 }
