@@ -47,21 +47,25 @@ class SwingGUI(controller: Controller) extends Frame with Observer:
   pack()
   centerOnScreen()
   open()
- 
-  var moveTextField = new TextField("")
+
+
+  // singleton which makes it possible to read the input of the textfield (from CellButton)
+  object MoveTextField {
+    var moveTextField = new TextField("")
+  }
   def movePanel: GridPanel = new GridPanel(1,2) {
           contents += new Label("Move to position (1-24): ")
-          contents += moveTextField
+          contents += MoveTextField.moveTextField
         }
   def contentPanel = new BorderPanel {
     add(new Label("Welcome to Nine Men's Morris".toUpperCase()), BorderPanel.Position.North)
     add(new CellPanel(), BorderPanel.Position.Center)
     add(movePanel, BorderPanel.Position.South)
   }
+  // this overwrites the contents of the GUI with a new BorderPanel every time the data structure is changed
+  def update: Unit = contents = contentPanel
 
-  def update: Unit =
-    contents = contentPanel
-
+  // class for creating a panel consisting of buttons
   class CellPanel() extends GridPanel(7, 7):
     border = EmptyBorder(20,20,20,20)
     printField
@@ -70,9 +74,10 @@ class SwingGUI(controller: Controller) extends Frame with Observer:
       var i = 0
       val list = fieldToList()
       (1 to 49).map(x =>
-        if (cellIsDefined(x)) { contents += new CellButton((i+1).toInt, list(i).toString); i += 1}
+        if (cellIsDefined(x)) {contents += new CellButton((i+1).toInt, list(i).toString); i += 1}
         else contents += new Button(""))
 
+    // auxiliary methods for printing the playfield
     def fieldToList(): List[Stone] =
       controller.field.cells.values.toList
     def definedCells: List[Int] =
@@ -80,27 +85,40 @@ class SwingGUI(controller: Controller) extends Frame with Observer:
     def cellIsDefined(pos: Int): Boolean =
       if (definedCells.contains(pos)) true else false
 
+  // class for buttons with a specific behavior
   class CellButton(pos: Int, stone: String) extends Button(stone):
     listenTo(mouse.clicks)
     listenTo(keys)
     reactions += {
-      // put a stone on the playfield
       case ButtonClicked(button) =>
-        /*if (textfieldMove.text == "")
+        val input = MoveTextField.moveTextField.text
+        // check if players are initialized
+        if (controller.player1 == None || controller.player2 == None)
+          println("Please enter your names first!")
+        // if textfield is empty, put a stone on the playfield
+        else if (input == "")
           if (
             Try(pos).isSuccess &&
             controller.field.fieldRange.contains(pos) &&
             controller.field.isEmptyCell(pos)
           )
           controller.executeStrategy(Put(pos, controller.nextPlayer().stoneType))
-        else
-          val newPos = textfieldMove.text.toInt
+        // if textfield contains a number (position), move a stone on the playfield
+        else if (input.matches("[1-9]|(1[0-9])|(2[0-4])"))
+          val newPos = input.toInt
           if (
             Try(pos).isSuccess &&
             Try(newPos).isSuccess &&
             controller.field.fieldRange.contains(pos) &&
             controller.field.fieldRange.contains(newPos) &&
-            controller.field.isMovableToPosition(pos, newPos, controller.nextPlayer().stoneType)
+            controller.field.isMovableToPosition(pos, newPos, toStone(stone))
           )
-          controller.executeStrategy(Move(pos, newPos, controller.nextPlayer().stoneType))*/
+          controller.executeStrategy(Move(pos, newPos, toStone(stone)))
+        else
+          println("Input has to be a number from 1 to 24!")
+    }
+    def toStone(stoneAsString: String) = stoneAsString match {
+        case "X" => Stone.X
+        case "O" => Stone.O
+        case "+" => Stone.Empty
     }
