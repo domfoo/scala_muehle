@@ -24,7 +24,8 @@ class SwingGUI(controller: Controller) extends Frame with Observer:
     contents += new Menu("File") {
       mnemonic = Key.F
       contents += new MenuItem(Action("New") {
-        // implement newGame() method in Controller (unwichtig)
+        controller.newGame()
+        MoveTextField.moveTextField.text = ""
       })
       contents += new Separator
       contents += new MenuItem(Action("Quit") {

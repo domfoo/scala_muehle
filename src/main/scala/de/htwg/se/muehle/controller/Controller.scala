@@ -49,3 +49,8 @@ class Controller(var field: Field, var player1: Option[Player] = None, var playe
                 redoStack = stack
                 undoStack = head :: undoStack
         notifyObservers
+
+    def newGame(): Unit =
+        field = Field()
+        state = Player1State()
+        notifyObservers

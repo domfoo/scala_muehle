@@ -24,6 +24,7 @@ class TUI(controller: Controller) extends Observer:
         "Type 'q' or 'quit' to close the game."
     val wrongInputMessage = "Invalid command. Please use 'help' to see available commands."
     val exitMessage = "Bye!"
+    val newGameMessage = "\n\n\n\n\n\n\n\n\n\n---NEW GAME---"
 
     def run = {
         println(welcomeMessage + eol + "First, please enter the name of the first player:")
@@ -54,6 +55,9 @@ class TUI(controller: Controller) extends Observer:
             case Right(command) if command == "redo" =>
                 controller.redo()
                 gameLoop(player)
+            case Right(command) if command == "new" =>
+                controller.newGame()
+                gameLoop(player)
             case Right(command) if command == "h" => gameLoop(player)
             case Right(command) if command == "q" =>
             case _ => gameLoop(player)
@@ -62,6 +66,9 @@ class TUI(controller: Controller) extends Observer:
     def handleInput(input: String, stone: Stone): Either[PlayStrategy, String] = {
         val inputList = input.split(" ").toList
         inputList match
+            case "new" :: Nil =>
+                println(newGameMessage)
+                Right(inputList.head)
             case "q" :: Nil | "quit" :: Nil =>
                 println(exitMessage)
                 Right(inputList.head)
