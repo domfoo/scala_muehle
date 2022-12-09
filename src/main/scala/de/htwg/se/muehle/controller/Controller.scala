@@ -27,6 +27,14 @@ class Controller(var field: Field, var player1: Option[Player] = None, var playe
         this.player2 = Some(Player(player2, Stone.O))
 
     def executeStrategy(strategy: PlayStrategy): Unit =
+        strategy match {
+            case p: Put => 
+                state match {
+                    case Player1State() => player1.get.stones -= 1
+                    case Player2State() => player2.get.stones -= 1
+            }
+            case _ =>
+        }
         undoStack = strategy :: undoStack
         field = strategy.execute(field)
         notifyObservers
