@@ -5,7 +5,7 @@ import scala.collection.immutable.SortedMap
 // size is the number of rings of the mill field (must be greater than zero)
 case class Field(cells: SortedMap[Int, Stone]):
 
-    // a Map of all neighbours for each cell
+    // a map of all neighbours for each cell
     val neighbours = Map(
         1 -> Set(2, 10),
         2 -> Set(1, 3, 5),
@@ -32,6 +32,9 @@ case class Field(cells: SortedMap[Int, Stone]):
         23 -> Set(20, 22, 24),
         24 -> Set(15, 23)
     )
+    
+    // TODO: implement mills and mill detection
+    val millneighbours = Map()
 
     val eol = sys.props("line.separator")
     val fieldNumberOverview = "1-----------2-----------3" + eol +

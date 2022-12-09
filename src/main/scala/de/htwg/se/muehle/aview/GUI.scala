@@ -52,7 +52,7 @@ class GUI(controller: Controller) extends Frame with Observer:
 
   
   // singeltons which makes it possible to read the player names (from CellButton)
-  object Player1TextField { val player1TextField = new TextField(2) }
+  object Player1TextField { val player1TextField = new TextField() }
   object Player2TextField { val player2TextField = new TextField() }
   
   // creating a panel for game title and player names
