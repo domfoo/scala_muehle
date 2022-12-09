@@ -18,7 +18,7 @@ import javax.swing.border.EmptyBorder
 class GUI(controller: Controller) extends Frame with Observer:
   controller.add(this)
   title = "Nine men's morris"
-  preferredSize = new Dimension(800, 600)
+  preferredSize = new Dimension(800, 800)
   resizable = true
 
   menuBar = new MenuBar {
@@ -50,21 +50,42 @@ class GUI(controller: Controller) extends Frame with Observer:
   centerOnScreen()
   open()
 
-
-  // singleton which makes it possible to read the input of the textfield (from CellButton)
-  object MoveTextField {
-    var moveTextField = new TextField("", 2)
+  
+  // singeltons which makes it possible to read the player names (from CellButton)
+  object Player1TextField { val player1TextField = new TextField(2) }
+  object Player2TextField { val player2TextField = new TextField() }
+  
+  // creating a panel for game title and player names
+  def titlePanel: Label = new Label("Welcome to Nine Men's Morris".toUpperCase())
+  def playerNamesPanel: GridPanel = new GridPanel(2,2) {
+    border = new EmptyBorder(10,20,10,20)
+    contents += new Label("Player 1:")
+    contents += Player1TextField.player1TextField
+    contents += new Label("Player 2:")
+    contents += Player2TextField.player2TextField
   }
+  def titleAndPlayerNamesPanel: GridPanel = new GridPanel(2,1) {
+    contents += titlePanel
+    contents += playerNamesPanel
+  }
+  
+  // singleton which makes it possible to read the input of the textfield (from CellButton)
+  object MoveTextField { var moveTextField = new TextField() }
+  
+  // creating a panel for moving stones on the playfield
   def movePanel: GridPanel = new GridPanel(1,2) {
-          border = Swing.EmptyBorder(0,100,0,100)
+          border = Swing.EmptyBorder(20,100,20,100)
           contents += new Label("Move to position (1-24): ")
           contents += MoveTextField.moveTextField
         }
+        
+  // put all panels together
   def contentPanel = new BorderPanel {
-    add(new Label("Welcome to Nine Men's Morris".toUpperCase()), BorderPanel.Position.North)
+    add(titleAndPlayerNamesPanel, BorderPanel.Position.North)
     add(new CellPanel(), BorderPanel.Position.Center)
     add(movePanel, BorderPanel.Position.South)
   }
+  
   // this overwrites the contents of the GUI with a new BorderPanel every time the data structure is changed
   def update: Unit = contents = contentPanel
 
@@ -88,37 +109,49 @@ class GUI(controller: Controller) extends Frame with Observer:
     def cellIsDefined(pos: Int): Boolean =
       if (definedCells.contains(pos)) true else false
 
-  // class for buttons with a specific behavior
+      
+  // class for buttons with which to interact
   class CellButton(pos: Int, stone: String) extends Button(stone):
     listenTo(mouse.clicks)
     listenTo(keys)
     reactions += {
       case ButtonClicked(button) =>
         val input = MoveTextField.moveTextField.text
+        val player1 = Player1TextField.player1TextField.text
+        val player2 = Player2TextField.player2TextField.text
+        controller.player1 = player1 match {
+          case "" => None
+          case _ => Some(new Player(Player1TextField.player1TextField.text, Stone.X, 9))
+        }
+        controller.player2 = player2 match {
+          case "" => None
+          case _ => Some(new Player(Player2TextField.player2TextField.text, Stone.O, 9))
+        }
         // check if players are initialized
         if (controller.player1 == None || controller.player2 == None)
           println("Please enter your names first!")
         // if textfield is empty, put a stone on the playfield
-        else if (input == "")
-          if (
-            Try(pos).isSuccess &&
-            controller.field.fieldRange.contains(pos) &&
-            controller.field.isEmptyCell(pos)
-          )
-          controller.executeStrategy(Put(pos, controller.nextPlayer().stoneType))
-        // if textfield contains a number (position), move a stone on the playfield
-        else if (input.matches("[1-9]|(1[0-9])|(2[0-4])"))
-          val newPos = input.toInt
-          if (
-            Try(pos).isSuccess &&
-            Try(newPos).isSuccess &&
-            controller.field.fieldRange.contains(pos) &&
-            controller.field.fieldRange.contains(newPos) &&
-            controller.field.isMovableToPosition(pos, newPos, toStone(stone))
-          )
-          controller.executeStrategy(Move(pos, newPos, toStone(stone)))
         else
-          println("Input has to be a number from 1 to 24!")
+          if (input == "")
+            if (
+              Try(pos).isSuccess &&
+              controller.field.fieldRange.contains(pos) &&
+              controller.field.isEmptyCell(pos)
+            )
+            controller.executeStrategy(Put(pos, controller.nextPlayer().stoneType))
+          // if textfield contains a number (position), move a stone on the playfield
+          else if (input.matches("[1-9]|(1[0-9])|(2[0-4])"))
+            val newPos = input.toInt
+            if (
+              Try(pos).isSuccess &&
+              Try(newPos).isSuccess &&
+              controller.field.fieldRange.contains(pos) &&
+              controller.field.fieldRange.contains(newPos) &&
+              controller.field.isMovableToPosition(pos, newPos, toStone(stone))
+            )
+            controller.executeStrategy(Move(pos, newPos, toStone(stone)))
+          else
+            println("Input has to be a number from 1 to 24!")
     }
   def toStone(stoneAsString: String) = stoneAsString match {
       case "X" => Stone.X
