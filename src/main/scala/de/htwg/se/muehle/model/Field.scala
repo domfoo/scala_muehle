@@ -33,8 +33,33 @@ case class Field(cells: SortedMap[Int, Stone]):
         24 -> Set(15, 23)
     )
     
-    // TODO: implement mills and mill detection
-    val millneighbours = Map()
+    /// a List containing all possible Mill combinations
+    val millNeighbours = List(
+        Set(1, 2, 3),
+        Set(4, 5, 6),
+        Set(7, 8, 9),
+        Set(10, 11, 12),
+        Set(13, 14, 15),
+        Set(16, 17, 18),
+        Set(19, 20, 21),
+        Set(22, 23, 24),
+        Set(1, 10, 22),
+        Set(4, 11, 19),
+        Set(7, 12, 16),
+        Set(2, 5, 8),
+        Set(17, 20, 23),
+        Set(9, 13, 18),
+        Set(6, 14, 21),
+        Set(3, 15, 24)
+    )
+
+    // checks if a set (representing a row or column of a field) contains only stones of type stone
+    def isSetOfStone(set: Set[Int], stone: Stone) =
+        set.map(cells).filterNot(_ == stone).size == 0
+
+    // checks if a position produced a mill
+    def isFullMill(position: Int, stone: Stone) = 
+        millNeighbours.filter(_ contains position).filter(isSetOfStone(_, stone)).size == 1
 
     val eol = sys.props("line.separator")
     val fieldNumberOverview = "1-----------2-----------3" + eol +
