@@ -1,14 +1,17 @@
 package de.htwg.se.muehle
 package controller
 
-import model.Field
+import controller.controllerComponent.IController
+import model.impl.Field
 import model.Player
 import model.Stone
 import model.{PlayStrategy, Move, Put}
 import util.{ControllerState, Player1State, Player2State}
 import de.htwg.se.muehle.util.Observable
 
-class Controller(var field: Field, var player1: Option[Player] = None, var player2: Option[Player] = None, var state: ControllerState = Player1State()) extends Observable:
+class Controller(var field: Field, var player1: Option[Player] = None, var player2: Option[Player] = None,
+                 var state: ControllerState = Player1State()) extends IController with Observable:
+                    
     private var undoStack: List[PlayStrategy] = Nil
     private var redoStack: List[PlayStrategy] = Nil
 
@@ -22,7 +25,7 @@ class Controller(var field: Field, var player1: Option[Player] = None, var playe
                 state = Player1State()
                 player1.get
 
-    def initPlayers(player1: String, player2: String) =
+    def initPlayers(player1: String, player2: String): Unit =
         this.player1 = Some(Player(player1, Stone.X))
         this.player2 = Some(Player(player2, Stone.O))
 

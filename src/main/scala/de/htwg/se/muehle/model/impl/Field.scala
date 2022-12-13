@@ -1,9 +1,9 @@
-package de.htwg.se.muehle.model
+package de.htwg.se.muehle.model.impl
 
 import scala.collection.immutable.SortedMap
 
 // size is the number of rings of the mill field (must be greater than zero)
-case class Field(cells: SortedMap[Int, Stone]):
+case class Field(cells: SortedMap[Int, Stone]) extends IField:
 
     // a map of all neighbours for each cell
     val neighbours = Map(
@@ -54,7 +54,7 @@ case class Field(cells: SortedMap[Int, Stone]):
     )
 
     // checks if a set (representing a row or column of a field) contains only stones of type stone
-    def isSetOfStone(set: Set[Int], stone: Stone) =
+    def isSetOfStone(set: Set[Int], stone: Stone): Boolean =
         set.map(cells).filterNot(_ == stone).size == 0
 
     // checks if a position produced a mill
