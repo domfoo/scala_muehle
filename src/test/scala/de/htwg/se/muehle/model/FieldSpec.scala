@@ -1,5 +1,6 @@
 package de.htwg.se.muehle.model
 
+import de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl.Field
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers._
 
