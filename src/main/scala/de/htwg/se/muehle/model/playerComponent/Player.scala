@@ -1,4 +1,6 @@
-package de.htwg.se.muehle.model
+package de.htwg.se.muehle.model.playerComponent
+
+import de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl.Stone
 
 case class Player(name: String, stoneType: Stone, var stones: Int = 9):
     override def toString: String = name

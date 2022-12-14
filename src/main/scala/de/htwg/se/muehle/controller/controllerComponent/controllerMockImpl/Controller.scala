@@ -1,10 +1,10 @@
 package de.htwg.se.muehle.controller.controllerComponent.controllerMockImpl
 
 import de.htwg.se.muehle.controller.controllerComponent.IController
+import de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl.Field
+import de.htwg.se.muehle.model.playerComponent.Player
+import de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl.PlayStrategy
 import de.htwg.se.muehle.util.{ControllerState, Player1State, Player2State}
-import de.htwg.se.muehle.model.impl.Field
-import de.htwg.se.muehle.model.Player
-import de.htwg.se.muehle.model.PlayStrategy
 
 class Controller(var field: Field, var state: ControllerState = Player1State(),
                  var player1: Option[Player] = None, var player2: Option[Player] = None)

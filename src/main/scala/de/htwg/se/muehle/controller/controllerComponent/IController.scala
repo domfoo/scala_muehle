@@ -1,8 +1,8 @@
 package de.htwg.se.muehle.controller.controllerComponent
 
 import de.htwg.se.muehle.util.Observable
-import de.htwg.se.muehle.model.Player
-import de.htwg.se.muehle.model.PlayStrategy
+import de.htwg.se.muehle.model.playerComponent.Player
+import de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl.PlayStrategy
 
 trait IController extends Observable:
     def nextPlayer(): Player

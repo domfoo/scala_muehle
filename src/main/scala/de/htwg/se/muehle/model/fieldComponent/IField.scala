@@ -1,4 +1,6 @@
-package de.htwg.se.muehle.model
+package de.htwg.se.muehle.model.fieldComponent
+
+import de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl.Stone
 
 trait IField:
     def isSetOfStone(set: Set[Int], stone: Stone): Boolean

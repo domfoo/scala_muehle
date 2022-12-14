@@ -1,5 +1,7 @@
-package de.htwg.se.muehle.model.impl
+package de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl
 
+import de.htwg.se.muehle.model.fieldComponent.IField
+import de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl.Stone
 import scala.collection.immutable.SortedMap
 
 // size is the number of rings of the mill field (must be greater than zero)
@@ -54,11 +56,11 @@ case class Field(cells: SortedMap[Int, Stone]) extends IField:
     )
 
     // checks if a set (representing a row or column of a field) contains only stones of type stone
-    def isSetOfStone(set: Set[Int], stone: Stone): Boolean =
+    override def isSetOfStone(set: Set[Int], stone: Stone): Boolean =
         set.map(cells).filterNot(_ == stone).size == 0
 
     // checks if a position produced a mill
-    def isFullMill(position: Int, stone: Stone) = 
+    override def isFullMill(position: Int, stone: Stone) = 
         millNeighbours.filter(_ contains position).filter(isSetOfStone(_, stone)).size == 1
 
     val eol = sys.props("line.separator")
@@ -79,30 +81,25 @@ case class Field(cells: SortedMap[Int, Stone]) extends IField:
     val size = cells.size / 8
     val fieldRange = (1 to size * 8)
 
-    def replaceCell(position: Int, stone: Stone): Field =
+    override def replaceCell(position: Int, stone: Stone): Field =
         Field(cells.updated(position, stone))
 
-    def cleanCell(position: Int): Field =
+    override def cleanCell(position: Int): Field =
         replaceCell(position, Stone.Empty)
 
-    def isEmptyCell(position: Int): Boolean =
+    override def isEmptyCell(position: Int): Boolean =
         cells(position) == Stone.Empty
 
-    def isMovableToPosition(oldPosition: Int, newPosition: Int, stone: Stone): Boolean =
+    override def isMovableToPosition(oldPosition: Int, newPosition: Int, stone: Stone): Boolean =
         neighbours(oldPosition).contains(newPosition) && isEmptyCell(newPosition) && cells(oldPosition) == stone
-/*
-    def execMove(move: Move): Field =
-        move.oldPosition match
-            case Some(n) => cleanCell(n).replaceCell(move.newPosition, move.stone)
-            case None => replaceCell(move.newPosition, move.stone)*/
 
-    def line(i: Int): String =
+    override def line(i: Int): String =
         "|   " * (size - 1 - i ) + "#" + "-" * (4 * i + 3) + "#" + "-" * (4 * i + 3) + "#" + "   |" * (size - 1 - i ) + eol
-    def space(i: Int): String =
+    override def space(i: Int): String =
         "|   " * (size - 1 - i ) + "|" + " " * (4 * i + 3) + (if (i == 0) " " else "|") + " " * (4 * i + 3) + "|" + "   |" * (size - 1 - i ) + eol
-    def middle(): String =
+    override def middle(): String =
         "#---" * (size - 1) + "#" + " " * 7 + "#" + "---#" * (size - 1) + eol
-    def fieldPlaceholder(): String =
+    override def fieldPlaceholder(): String =
         ((size - 1) to 0 by -1).map((x: Int) => line(x) + space(x)).mkString("") +
         middle() +
         (0 until size).map((x: Int) => space(x) + line(x)).mkString("")

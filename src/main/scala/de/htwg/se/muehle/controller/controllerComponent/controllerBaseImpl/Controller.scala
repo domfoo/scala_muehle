@@ -1,10 +1,10 @@
 package de.htwg.se.muehle.controller.controllerComponent.controllerBaseImpl
 
 import de.htwg.se.muehle.controller.controllerComponent.IController
-import de.htwg.se.muehle.model.impl.Field
-import de.htwg.se.muehle.model.Player
-import de.htwg.se.muehle.model.Stone
-import de.htwg.se.muehle.model.{PlayStrategy, Move, Put}
+import de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl.Field
+import de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl.Stone
+import de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl.{PlayStrategy, Move, Put}
+import de.htwg.se.muehle.model.playerComponent.Player
 import de.htwg.se.muehle.util.{ControllerState, Player1State, Player2State}
 import de.htwg.se.muehle.util.Observable
 
@@ -16,7 +16,7 @@ class Controller(var field: Field, var state: ControllerState = Player1State(),
     private var redoStack: List[PlayStrategy] = Nil
 
     // changes the player state and returns the new active player
-    def nextPlayer(): Player =
+    override def nextPlayer(): Player =
         state match
             case first: Player1State =>
                 state = Player2State()
@@ -25,11 +25,11 @@ class Controller(var field: Field, var state: ControllerState = Player1State(),
                 state = Player1State()
                 player1.get
 
-    def initPlayers(player1: String, player2: String): Unit =
+    override def initPlayers(player1: String, player2: String): Unit =
         this.player1 = Some(Player(player1, Stone.X))
         this.player2 = Some(Player(player2, Stone.O))
 
-    def executeStrategy(strategy: PlayStrategy): Unit =
+    override def executeStrategy(strategy: PlayStrategy): Unit =
         strategy match {
             case p: Put => 
                 state match {
@@ -42,7 +42,7 @@ class Controller(var field: Field, var state: ControllerState = Player1State(),
         field = strategy.execute(field)
         notifyObservers
 
-    def undo(): Unit =
+    override def undo(): Unit =
         undoStack match
             case Nil =>
             case head :: stack =>
@@ -52,7 +52,7 @@ class Controller(var field: Field, var state: ControllerState = Player1State(),
                 redoStack = head :: redoStack
         notifyObservers
 
-    def redo(): Unit =
+    override def redo(): Unit =
         redoStack match
             case Nil =>
             case head :: stack =>
@@ -61,7 +61,7 @@ class Controller(var field: Field, var state: ControllerState = Player1State(),
                 undoStack = head :: undoStack
         notifyObservers
 
-    def newGame(): Unit =
+    override def newGame(): Unit =
         field = Field()
         state = Player1State()
         notifyObservers
