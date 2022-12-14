@@ -30,14 +30,14 @@ class Controller(var field: Field, var state: ControllerState = Player1State(),
         this.player2 = Some(Player(player2, Stone.O))
 
     override def executeStrategy(strategy: PlayStrategy): Unit =
-        strategy match {
+        /* strategy match {
             case p: Put => 
                 state match {
                     case Player1State() => player1.get.stones -= 1
                     case Player2State() => player2.get.stones -= 1
             }
             case _ =>
-        }
+        } */
         undoStack = strategy :: undoStack
         field = strategy.execute(field)
         notifyObservers
