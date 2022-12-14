@@ -1,5 +1,6 @@
-package de.htwg.se.muehle
-package model
+package de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl
+
+import de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl.Field
 
 trait PlayStrategy:
     def execute(field: Field): Field

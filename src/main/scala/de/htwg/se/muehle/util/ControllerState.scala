@@ -1,5 +1,4 @@
-package de.htwg.se.muehle
-package util
+package de.htwg.se.muehle.util
 
 trait ControllerState
 

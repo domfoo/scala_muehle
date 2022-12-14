@@ -1,13 +1,13 @@
 package de.htwg.se.muehle
 package aview
 
-import model.Field
-import model.{PlayStrategy, Put, Move}
-import model.Player
-import model.Stone
-import controller.Controller
-import util.{Player1State, Player2State}
-import util.Observer
+import de.htwg.se.muehle.controller.controllerComponent.controllerBaseImpl.Controller
+import de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl.Field
+import de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl.{PlayStrategy, Put, Move}
+import de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl.Stone
+import de.htwg.se.muehle.model.playerComponent.Player
+import de.htwg.se.muehle.util.{Player1State, Player2State}
+import de.htwg.se.muehle.util.Observer
 import scala.io.StdIn.readLine
 import scala.util.Try
 

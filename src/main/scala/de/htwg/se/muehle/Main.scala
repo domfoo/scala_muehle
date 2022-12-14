@@ -1,10 +1,9 @@
 package de.htwg.se.muehle
 
-import aview.TUI
-import aview.GUI
-import controller.Controller
-import model.Stone
-import model.Field
+import de.htwg.se.muehle.aview.TUI
+import de.htwg.se.muehle.aview.GUI
+import de.htwg.se.muehle.controller.controllerComponent.controllerBaseImpl.Controller
+import de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl.Field
 
 @main def run: Unit =
     val field = Field()

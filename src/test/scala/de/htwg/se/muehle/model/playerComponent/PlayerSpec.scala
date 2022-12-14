@@ -1,7 +1,11 @@
 package de.htwg.se.muehle.model
 
+import de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl.Stone
+import de.htwg.se.muehle.model.playerComponent.Player
+
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers._
+
 
 class PlayerSpec extends AnyWordSpec {
     

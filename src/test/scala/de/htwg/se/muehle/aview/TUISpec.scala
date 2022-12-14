@@ -1,14 +1,15 @@
-package de.htwg.se.muehle
-package aview
+package de.htwg.se.muehle.aview
 
-import aview.TUI
-import controller.Controller
-import model.Field
-import model.{PlayStrategy, Put, Move}
-import model.Player
-import model.Stone
+import de.htwg.se.muehle.aview.TUI
+import de.htwg.se.muehle.controller.controllerComponent.controllerBaseImpl.Controller
+import de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl.{PlayStrategy, Put, Move}
+import de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl.Field
+import de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl.Stone
+import de.htwg.se.muehle.model.playerComponent.Player
+
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers._
+
 
 class TUISpec extends AnyWordSpec {
     "The TUI" should {
