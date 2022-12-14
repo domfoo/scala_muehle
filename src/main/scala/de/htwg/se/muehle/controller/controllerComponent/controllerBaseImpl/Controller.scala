@@ -1,16 +1,16 @@
-package de.htwg.se.muehle
-package controller
+package de.htwg.se.muehle.controller.controllerComponent.controllerBaseImpl
 
-import controller.controllerComponent.IController
-import model.impl.Field
-import model.Player
-import model.Stone
-import model.{PlayStrategy, Move, Put}
-import util.{ControllerState, Player1State, Player2State}
+import de.htwg.se.muehle.controller.controllerComponent.IController
+import de.htwg.se.muehle.model.impl.Field
+import de.htwg.se.muehle.model.Player
+import de.htwg.se.muehle.model.Stone
+import de.htwg.se.muehle.model.{PlayStrategy, Move, Put}
+import de.htwg.se.muehle.util.{ControllerState, Player1State, Player2State}
 import de.htwg.se.muehle.util.Observable
 
-class Controller(var field: Field, var player1: Option[Player] = None, var player2: Option[Player] = None,
-                 var state: ControllerState = Player1State()) extends IController with Observable:
+class Controller(var field: Field, var state: ControllerState = Player1State(),
+                 var player1: Option[Player] = None, var player2: Option[Player] = None)
+                 extends IController with Observable:
                     
     private var undoStack: List[PlayStrategy] = Nil
     private var redoStack: List[PlayStrategy] = Nil
