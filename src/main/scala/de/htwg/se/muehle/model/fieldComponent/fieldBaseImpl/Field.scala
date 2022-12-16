@@ -87,10 +87,7 @@ case class Field(cells: SortedMap[Int, Stone]) extends IField:
         
     // checks if a set (representing a row or column of a field) contains only stones of type stone
     override def isSetOfStone(set: Set[Int], stone: Stone): Boolean =
-        set match {
-            case a if set.isEmpty => false
-            case _ => set.map(x => cells(x)).filterNot(_ == stone).size == 0
-        }
+        set.map(x => cells(x)).filterNot(_ == stone).size == 0
         
     // checks if a position produced a mill
     override def isFullMill(position: Int, stone: Stone): Boolean = 
