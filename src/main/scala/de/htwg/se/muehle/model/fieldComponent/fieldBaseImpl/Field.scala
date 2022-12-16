@@ -54,15 +54,7 @@ case class Field(cells: SortedMap[Int, Stone]) extends IField:
         Set(6, 14, 21),
         Set(3, 15, 24)
     )
-
-    // checks if a set (representing a row or column of a field) contains only stones of type stone
-    override def isSetOfStone(set: Set[Int], stone: Stone): Boolean =
-        set.map(cells).filterNot(_ == stone).size == 0
-
-    // checks if a position produced a mill
-    override def isFullMill(position: Int, stone: Stone) = 
-        millNeighbours.filter(_ contains position).filter(isSetOfStone(_, stone)).size == 1
-
+        
     val eol = sys.props("line.separator")
     val fieldNumberOverview = "1-----------2-----------3" + eol +
         "|           |           |" + eol +
@@ -92,6 +84,17 @@ case class Field(cells: SortedMap[Int, Stone]) extends IField:
 
     override def isMovableToPosition(oldPosition: Int, newPosition: Int, stone: Stone): Boolean =
         neighbours(oldPosition).contains(newPosition) && isEmptyCell(newPosition) && cells(oldPosition) == stone
+        
+    // checks if a set (representing a row or column of a field) contains only stones of type stone
+    override def isSetOfStone(set: Set[Int], stone: Stone): Boolean =
+        set match {
+            case a if set.isEmpty => false
+            case _ => set.map(x => cells(x)).filterNot(_ == stone).size == 0
+        }
+        
+    // checks if a position produced a mill
+    override def isFullMill(position: Int, stone: Stone): Boolean = 
+        millNeighbours.filter(_ contains position).filter(isSetOfStone(_, stone)).size == 1
 
     override def line(i: Int): String =
         "|   " * (size - 1 - i ) + "#" + "-" * (4 * i + 3) + "#" + "-" * (4 * i + 3) + "#" + "   |" * (size - 1 - i ) + eol
