@@ -1,21 +1,21 @@
 package de.htwg.se.muehle
 package aview
 
-import de.htwg.se.muehle.controller.controllerComponent.controllerBaseImpl.Controller
+import de.htwg.se.muehle.controller.controllerComponent.IController
 import de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl.{PlayStrategy, Put, Move}
 import de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl.Field
 import de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl.Stone
 import de.htwg.se.muehle.model.playerComponent.Player
 import de.htwg.se.muehle.util.Observer
+
 import scala.swing._
 import scala.swing.event._
-import java.awt.Dimension
-import scala.swing.Swing.EmptyBorder
-import javax.swing.SwingUtilities
 import scala.util.Try
+import java.awt.Dimension
 import javax.swing.border.EmptyBorder
 
-class GUI(controller: Controller) extends Frame with Observer:
+
+class GUI(controller: IController) extends Frame with Observer:
   controller.add(this)
   title = "Nine men's morris"
   preferredSize = new Dimension(800, 800)
@@ -51,7 +51,7 @@ class GUI(controller: Controller) extends Frame with Observer:
   open()
 
   
-  // singeltons which makes it possible to read the player names (from CellButton)
+  // singeltons which make it possible to read the player names (from CellButton)
   object Player1TextField { val player1TextField = new TextField() }
   object Player2TextField { val player2TextField = new TextField() }
   
@@ -69,7 +69,7 @@ class GUI(controller: Controller) extends Frame with Observer:
     contents += playerNamesPanel
   }
   
-  // singleton which makes it possible to read the input of the textfield (from CellButton)
+  // singleton which makes it possible to read a position (from CellButton)
   object MoveTextField { var moveTextField = new TextField() }
   
   // creating a panel for moving stones on the playfield
