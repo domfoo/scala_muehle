@@ -1,7 +1,8 @@
 package de.htwg.se.muehle
 package aview
 
-import de.htwg.se.muehle.controller.controllerComponent.IController
+//import de.htwg.se.muehle.controller.controllerComponent.IController
+import de.htwg.se.muehle.controller.controllerComponent.controllerBaseImpl.Controller
 import de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl.{PlayStrategy, Put, Move}
 import de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl.Field
 import de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl.Stone
@@ -15,7 +16,8 @@ import java.awt.Dimension
 import javax.swing.border.EmptyBorder
 
 
-class GUI(controller: IController) extends Frame with Observer:
+//class GUI(controller: IController) extends Frame with Observer:
+class GUI(controller: Controller) extends Frame with Observer:
   controller.add(this)
   title = "Nine men's morris"
   preferredSize = new Dimension(800, 800)
