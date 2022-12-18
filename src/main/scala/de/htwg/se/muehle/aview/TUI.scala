@@ -1,8 +1,7 @@
 package de.htwg.se.muehle
 package aview
 
-//import de.htwg.se.muehle.controller.controllerComponent.IController
-import de.htwg.se.muehle.controller.controllerComponent.controllerBaseImpl.Controller
+import de.htwg.se.muehle.controller.controllerComponent.IController
 import de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl.Field
 import de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl.{PlayStrategy, Put, Move}
 import de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl.Stone
@@ -13,8 +12,7 @@ import scala.io.StdIn.readLine
 import scala.util.Try
 
 
-//class TUI(controller: IController) extends Observer:
-    class TUI(controller: Controller) extends Observer:
+class TUI(controller: IController) extends Observer:
     controller.add(this)
     val eol = sys.props("line.separator")
     val welcomeMessage = "---WELCOME TO MILL!---"

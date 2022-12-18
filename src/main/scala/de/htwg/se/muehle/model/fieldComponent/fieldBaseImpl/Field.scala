@@ -4,11 +4,11 @@ import de.htwg.se.muehle.model.fieldComponent.IField
 import de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl.Stone
 import scala.collection.immutable.SortedMap
 import com.google.inject.name.Named
-import com.google.inject.Inject
+import com.google.inject.{Guice, Inject}
 
 
 case class Field @Inject() (cells: SortedMap[Int, Stone]) extends IField:
-    
+
     // a map of all neighbours for each cell
     val neighbours = Map(
         1 -> Set(2, 10),
@@ -36,7 +36,7 @@ case class Field @Inject() (cells: SortedMap[Int, Stone]) extends IField:
         23 -> Set(20, 22, 24),
         24 -> Set(15, 23)
     )
-    
+
     /// a list containing all possible mill combinations
     val millNeighbours = List(
         Set(1, 2, 3),
@@ -92,7 +92,7 @@ case class Field @Inject() (cells: SortedMap[Int, Stone]) extends IField:
         set.map(cells).filterNot(_ == stone).size == 0
 
     // checks if a move produces a mill
-    override def isFullMill(position: Int, stone: Stone) = 
+    override def isFullMill(position: Int, stone: Stone) =
         millNeighbours.filter(_ contains position).filter(isSetOfStone(_, stone)).size == 1
 
     // methods for printing the field as a string

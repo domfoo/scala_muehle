@@ -1,8 +1,7 @@
 package de.htwg.se.muehle
 package aview
 
-//import de.htwg.se.muehle.controller.controllerComponent.IController
-import de.htwg.se.muehle.controller.controllerComponent.controllerBaseImpl.Controller
+import de.htwg.se.muehle.controller.controllerComponent.IController
 import de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl.{PlayStrategy, Put, Move}
 import de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl.Field
 import de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl.Stone
@@ -16,8 +15,7 @@ import java.awt.Dimension
 import javax.swing.border.EmptyBorder
 
 
-//class GUI(controller: IController) extends Frame with Observer:
-class GUI(controller: Controller) extends Frame with Observer:
+class GUI(controller: IController) extends Frame with Observer:
   controller.add(this)
   title = "Nine men's morris"
   preferredSize = new Dimension(800, 800)
@@ -52,11 +50,11 @@ class GUI(controller: Controller) extends Frame with Observer:
   centerOnScreen()
   open()
 
-  
+
   // singeltons which make it possible to read the player names (from CellButton)
   object Player1TextField { val player1TextField = new TextField() }
   object Player2TextField { val player2TextField = new TextField() }
-  
+
   // creating a panel for game title and player names
   def titlePanel: Label = new Label("Welcome to Nine Men's Morris".toUpperCase())
   def playerNamesPanel: GridPanel = new GridPanel(2,2) {
@@ -70,24 +68,24 @@ class GUI(controller: Controller) extends Frame with Observer:
     contents += titlePanel
     contents += playerNamesPanel
   }
-  
+
   // singleton which makes it possible to read a position (from CellButton)
   object MoveTextField { var moveTextField = new TextField() }
-  
+
   // creating a panel for moving stones on the playfield
   def movePanel: GridPanel = new GridPanel(1,2) {
           border = Swing.EmptyBorder(20,100,20,100)
           contents += new Label("Move to position (1-24): ")
           contents += MoveTextField.moveTextField
         }
-        
+
   // put all panels together
   def contentPanel = new BorderPanel {
     add(titleAndPlayerNamesPanel, BorderPanel.Position.North)
     add(new CellPanel(), BorderPanel.Position.Center)
     add(movePanel, BorderPanel.Position.South)
   }
-  
+
   // this overwrites the contents of the GUI with a new BorderPanel every time the data structure is changed
   def update: Unit = contents = contentPanel
 
@@ -111,7 +109,7 @@ class GUI(controller: Controller) extends Frame with Observer:
     def cellIsDefined(pos: Int): Boolean =
       if (definedCells.contains(pos)) true else false
 
-      
+
   // class for buttons with which to interact
   class CellButton(pos: Int, stone: String) extends Button(stone):
     listenTo(mouse.clicks)
