@@ -7,7 +7,7 @@ import de.htwg.se.muehle.model.fieldComponent.IField
 import com.google.inject.Guice
 
 
-object Muehle {
+object Muehle { 
     val injector = Guice.createInjector(new MuehleModule)
     val controller = injector.getInstance(classOf[IController])
 

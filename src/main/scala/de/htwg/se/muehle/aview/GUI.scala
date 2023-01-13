@@ -7,6 +7,7 @@ import de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl.Field
 import de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl.Stone
 import de.htwg.se.muehle.model.playerComponent.Player
 import de.htwg.se.muehle.util.Observer
+import com.google.inject.{Guice, Inject}
 
 import scala.swing._
 import scala.swing.event._
@@ -15,7 +16,7 @@ import java.awt.Dimension
 import javax.swing.border.EmptyBorder
 
 
-class GUI(controller: IController) extends Frame with Observer:
+class GUI(@Inject controller: IController) extends Frame with Observer:
   controller.add(this)
   title = "Nine men's morris"
   preferredSize = new Dimension(800, 800)

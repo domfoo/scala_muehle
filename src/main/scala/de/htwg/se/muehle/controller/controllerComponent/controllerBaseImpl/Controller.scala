@@ -21,6 +21,7 @@ class Controller @Inject() (
     ) extends IController with Observable:
 
     //def this() = this(Guice.createInjector(new MuehleModule).getInstance(classOf[Field]))
+    //val injector = Guice.createInjector(new MuehleModule)
     private var undoStack: List[PlayStrategy] = Nil
     private var redoStack: List[PlayStrategy] = Nil
 

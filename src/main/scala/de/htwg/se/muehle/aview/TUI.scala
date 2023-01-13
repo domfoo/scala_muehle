@@ -10,9 +10,10 @@ import de.htwg.se.muehle.util.{Player1State, Player2State}
 import de.htwg.se.muehle.util.Observer
 import scala.io.StdIn.readLine
 import scala.util.Try
+import com.google.inject.{Guice, Inject}
 
 
-class TUI(controller: IController) extends Observer:
+class TUI(@Inject controller: IController) extends Observer:
     controller.add(this)
     val eol = sys.props("line.separator")
     val welcomeMessage = "---WELCOME TO MILL!---"

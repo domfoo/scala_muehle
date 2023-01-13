@@ -12,6 +12,5 @@ import de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl.Field
 
 class MuehleModule extends AbstractModule:
     override def configure(): Unit =
-        bind[IField](new TypeLiteral[IField] {}).toInstance(Field())
-        //bind[IController](new TypeLiteral[IController] {}).toInstance(new Controller(Field()))
         bind(classOf[IController]).toInstance(Controller(Field()))
+        
