@@ -56,7 +56,7 @@ case class Field @Inject() (cells: SortedMap[Int, Stone]) extends IField:
         Set(6, 14, 21),
         Set(3, 15, 24)
     )
-
+    
     val eol = sys.props("line.separator")
     val fieldNumberOverview = "1-----------2-----------3" + eol +
         "|           |           |" + eol +
@@ -86,6 +86,14 @@ case class Field @Inject() (cells: SortedMap[Int, Stone]) extends IField:
 
     override def isMovableToPosition(oldPosition: Int, newPosition: Int, stone: Stone): Boolean =
         neighbours(oldPosition).contains(newPosition) && isEmptyCell(newPosition) && cells(oldPosition) == stone
+        
+    // checks if a set (representing a row or column of a field) contains only stones of type stone
+    override def isSetOfStone(set: Set[Int], stone: Stone): Boolean =
+        set.map(x => cells(x)).filterNot(_ == stone).size == 0
+        
+    // checks if a position produced a mill
+    override def isFullMill(position: Int, stone: Stone): Boolean = 
+        millNeighbours.filter(_ contains position).filter(isSetOfStone(_, stone)).size == 1
 
     // checks if a row or column contains only stones of the same type
     override def isSetOfStone(set: Set[Int], stone: Stone): Boolean =
