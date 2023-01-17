@@ -1,7 +1,7 @@
 package de.htwg.se.muehle
 package aview
 
-import de.htwg.se.muehle.controller.controllerComponent.controllerBaseImpl.Controller
+import de.htwg.se.muehle.controller.controllerComponent.IController
 import de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl.Field
 import de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl.{PlayStrategy, Put, Move}
 import de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl.Stone
@@ -10,8 +10,10 @@ import de.htwg.se.muehle.util.{Player1State, Player2State}
 import de.htwg.se.muehle.util.Observer
 import scala.io.StdIn.readLine
 import scala.util.Try
+import com.google.inject.{Guice, Inject}
 
-class TUI(controller: Controller) extends Observer:
+
+class TUI(@Inject controller: IController) extends Observer:
     controller.add(this)
     val eol = sys.props("line.separator")
     val welcomeMessage = "---WELCOME TO MILL!---"
@@ -62,7 +64,7 @@ class TUI(controller: Controller) extends Observer:
             case Right(command) if command == "q" =>
             case _ => gameLoop(player)
 
-    // returns a Move when the input is a valid move or the first element of the input list as a String which can be used handle the help and quit command
+    // returns a Move when the input is valid or the first element of the input list which can be used to handle the help and quit command
     def handleInput(input: String, stone: Stone): Either[PlayStrategy, String] = {
         val inputList = input.split(" ").toList
         inputList match

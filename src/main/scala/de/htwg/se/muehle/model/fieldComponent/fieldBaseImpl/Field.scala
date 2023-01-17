@@ -3,9 +3,11 @@ package de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl
 import de.htwg.se.muehle.model.fieldComponent.IField
 import de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl.Stone
 import scala.collection.immutable.SortedMap
+import com.google.inject.name.Named
+import com.google.inject.{Guice, Inject}
 
-// size is the number of rings of the mill field (must be greater than zero)
-case class Field(cells: SortedMap[Int, Stone]) extends IField:
+
+case class Field @Inject() (cells: SortedMap[Int, Stone]) extends IField:
 
     // a map of all neighbours for each cell
     val neighbours = Map(
@@ -34,8 +36,8 @@ case class Field(cells: SortedMap[Int, Stone]) extends IField:
         23 -> Set(20, 22, 24),
         24 -> Set(15, 23)
     )
-    
-    /// a List containing all possible Mill combinations
+
+    /// a list containing all possible mill combinations
     val millNeighbours = List(
         Set(1, 2, 3),
         Set(4, 5, 6),
@@ -54,7 +56,7 @@ case class Field(cells: SortedMap[Int, Stone]) extends IField:
         Set(6, 14, 21),
         Set(3, 15, 24)
     )
-        
+    
     val eol = sys.props("line.separator")
     val fieldNumberOverview = "1-----------2-----------3" + eol +
         "|           |           |" + eol +
@@ -93,6 +95,15 @@ case class Field(cells: SortedMap[Int, Stone]) extends IField:
     override def isFullMill(position: Int, stone: Stone): Boolean = 
         millNeighbours.filter(_ contains position).filter(isSetOfStone(_, stone)).size == 1
 
+    // checks if a row or column contains only stones of the same type
+    override def isSetOfStone(set: Set[Int], stone: Stone): Boolean =
+        set.map(cells).filterNot(_ == stone).size == 0
+
+    // checks if a move produces a mill
+    override def isFullMill(position: Int, stone: Stone) =
+        millNeighbours.filter(_ contains position).filter(isSetOfStone(_, stone)).size == 1
+
+    // methods for printing the field as a string
     override def line(i: Int): String =
         "|   " * (size - 1 - i ) + "#" + "-" * (4 * i + 3) + "#" + "-" * (4 * i + 3) + "#" + "   |" * (size - 1 - i ) + eol
     override def space(i: Int): String =
@@ -109,6 +120,7 @@ case class Field(cells: SortedMap[Int, Stone]) extends IField:
         (fieldPlaceholder().split("#").zipAll(cells.values,"","") flatMap { case (a, b) => Seq(a, b) }).mkString("")
     }
 
+// companion object containing factory methods for creating a field instance
 object Field:
     def apply(cells: SortedMap[Int, Stone]): Field = new Field(cells)
     def apply(size: Int = 3): Field = new Field(SortedMap((1 to size * 8).map(k => (k -> Stone.Empty)).toSeq:_*))
