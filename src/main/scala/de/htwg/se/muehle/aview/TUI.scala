@@ -35,35 +35,32 @@ class TUI(@Inject controller: IController) extends Observer:
 
         println(eol + "Now, please enter the name of the second player:")
         val player2Name = readLine()
-
-        controller.initPlayers(player1Name, player2Name)
-
+        
         println(eol + helpMessage)
         println(controller.field.fieldNumberOverview + eol)
-        update
-
-        gameLoop(controller.player1.get)
+        
+        controller.initPlayers(player1Name, player2Name)
+        gameLoop()
     }
 
-    def gameLoop(player: Player): Unit =
-        println("Player " + player.name + " (" + player.stoneType + "):")
-        print("> ")
-        handleInput(readLine, player.stoneType) match
+    def gameLoop(): Unit =
+        handleInput(readLine, controller.currentPlayer().stoneType) match
             case Left(strategy) =>
                 controller.executeStrategy(strategy)
-                gameLoop(controller.nextPlayer())
             case Right(command) if command == "undo" =>
                 controller.undo()
-                gameLoop(player)
             case Right(command) if command == "redo" =>
                 controller.redo()
-                gameLoop(player)
             case Right(command) if command == "new" =>
                 controller.newGame()
-                gameLoop(player)
-            case Right(command) if command == "h" => gameLoop(player)
+            case Right(command) if command == "h" => 
+                controller.stay()
             case Right(command) if command == "q" =>
-            case _ => gameLoop(player)
+                return
+            case _ => 
+                controller.stay()
+        
+        gameLoop()
 
     // returns a Move when the input is valid or the first element of the input list which can be used to handle the help and quit command
     def handleInput(input: String, stone: Stone): Either[PlayStrategy, String] = {
@@ -102,4 +99,8 @@ class TUI(@Inject controller: IController) extends Observer:
 
     override def update: Unit = {
         println(controller.field)
+
+        val player = controller.currentPlayer()
+        println("Player " + player.name + " (" + player.stoneType + "):")
+        print("> ")
     }

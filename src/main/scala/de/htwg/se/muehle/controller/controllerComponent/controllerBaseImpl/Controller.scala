@@ -35,22 +35,24 @@ class Controller @Inject() (
                 state = Player1State()
                 player1.get
 
+    override def currentPlayer(): Player = 
+        state match
+            case first: Player1State =>
+                player1.get
+            case second: Player2State =>
+                player2.get
+        
+
     // initializes the two players with a name and a stone type
     override def initPlayers(player1: String, player2: String): Unit =
         this.player1 = Some(Player(player1, Stone.X))
         this.player2 = Some(Player(player2, Stone.O))
+        notifyObservers
 
     override def executeStrategy(strategy: PlayStrategy): Unit =
-        /* strategy match {
-            case p: Put =>
-                state match {
-                    case Player1State() => player1.get.stones -= 1
-                    case Player2State() => player2.get.stones -= 1
-            }
-            case _ =>
-        } */
         undoStack = strategy :: undoStack
         field = strategy.execute(field)
+        this.nextPlayer()
         notifyObservers
 
     // undo the last command
@@ -58,7 +60,6 @@ class Controller @Inject() (
         undoStack match
             case Nil =>
             case head :: stack =>
-                println("some undo stack")
                 field = head.undo(field)
                 undoStack = stack
                 redoStack = head :: redoStack
@@ -73,6 +74,9 @@ class Controller @Inject() (
                 redoStack = stack
                 undoStack = head :: undoStack
         notifyObservers
+
+    // no move
+    override def stay(): Unit = notifyObservers
 
     // create a new game with an empty board
     override def newGame(): Unit =

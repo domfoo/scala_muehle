@@ -12,8 +12,10 @@ trait IController extends Observable:
     var player1: Option[Player]
     var player2: Option[Player]
     def nextPlayer(): Player
+    def currentPlayer(): Player
     def initPlayers(player1: String, player2: String): Unit
     def executeStrategy(strategy: PlayStrategy): Unit
     def undo(): Unit
     def redo(): Unit
+    def stay(): Unit
     def newGame(): Unit
