@@ -22,6 +22,7 @@ class TUI(@Inject controller: IController) extends Observer:
         "Type 'move 2 3' to move a stone from position 2 to position 3." + eol +
         "Type 'undo' to undo your last command." + eol +
         "Type 'redo' to redo your last command." + eol +
+        "Type 'new' for a new game with the same players." + eol +
         "Type 'h' or 'help' for this help message." + eol +
         "Type 'q' or 'quit' to close the game."
     val wrongInputMessage = "Invalid command. Please use 'help' to see available commands."
@@ -99,4 +100,6 @@ class TUI(@Inject controller: IController) extends Observer:
                 Right(inputList.head)
     }
 
-    override def update: Unit = println(controller.field)
+    override def update: Unit = {
+        println(controller.field)
+    }
