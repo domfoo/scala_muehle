@@ -44,7 +44,7 @@ class TUI(@Inject controller: IController) extends Observer:
     }
 
     def gameLoop(): Unit =
-        handleInput(readLine, controller.currentPlayer().stoneType) match
+        handleInput(readLine, controller.currentPlayer().get.stoneType) match
             case Left(strategy) =>
                 controller.executeStrategy(strategy)
             case Right(command) if command == "undo" =>
@@ -100,7 +100,7 @@ class TUI(@Inject controller: IController) extends Observer:
     override def update: Unit = {
         println(eol + controller.field)
 
-        val player = controller.currentPlayer()
+        val player = controller.currentPlayer().get
         println("Player " + player.name + " (" + player.stoneType + "):")
         print("> ")
     }

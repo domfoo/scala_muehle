@@ -26,21 +26,21 @@ class Controller @Inject() (
     private var redoStack: List[PlayStrategy] = Nil
 
     // changes the player state and returns the new active player
-    override def nextPlayer(): Player =
+    override def nextPlayer(): Option[Player] =
         state match
             case first: Player1State =>
                 state = Player2State()
-                player2.get
+                player2
             case second: Player2State =>
                 state = Player1State()
-                player1.get
+                player1
 
-    override def currentPlayer(): Player = 
+    override def currentPlayer(): Option[Player] = 
         state match
             case first: Player1State =>
-                player1.get
+                player1
             case second: Player2State =>
-                player2.get
+                player2
         
 
     // initializes the two players with a name and a stone type
