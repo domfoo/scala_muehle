@@ -75,10 +75,10 @@ class GUI(@Inject controller: IController) extends Frame with Observer:
 
   // creating a panel for moving stones on the playfield
   def movePanel: GridPanel = new GridPanel(1,2) {
-          border = Swing.EmptyBorder(20,100,20,100)
-          contents += new Label("Move to position (1-24): ")
-          contents += MoveTextField.moveTextField
-        }
+    border = Swing.EmptyBorder(20,100,20,100)
+    contents += new Label("Move to position (1-24): ")
+    contents += MoveTextField.moveTextField
+  }
 
   // put all panels together
   def contentPanel = new BorderPanel {
@@ -139,7 +139,7 @@ class GUI(@Inject controller: IController) extends Frame with Observer:
               controller.field.fieldRange.contains(pos) &&
               controller.field.isEmptyCell(pos)
             )
-            controller.executeStrategy(Put(pos, controller.nextPlayer().stoneType))
+            controller.executeStrategy(Put(pos, controller.currentPlayer().stoneType))
           // if textfield contains a number (position), move a stone on the playfield
           else if (input.matches("[1-9]|(1[0-9])|(2[0-4])"))
             val newPos = input.toInt

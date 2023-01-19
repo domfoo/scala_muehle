@@ -14,6 +14,6 @@ object Muehle {
     @main
     def main(): Unit =
         val tui = TUI(controller)
-        //val gui = GUI(controller)
+        val gui = GUI(controller)
         tui.run
 }

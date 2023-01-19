@@ -98,7 +98,7 @@ class TUI(@Inject controller: IController) extends Observer:
     }
 
     override def update: Unit = {
-        println(controller.field)
+        println(eol + controller.field)
 
         val player = controller.currentPlayer()
         println("Player " + player.name + " (" + player.stoneType + "):")
