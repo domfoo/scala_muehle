@@ -5,6 +5,7 @@ import de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl.Stone
 import scala.collection.immutable.SortedMap
 import com.google.inject.name.Named
 import com.google.inject.{Guice, Inject}
+import scala.xml.{Elem, NodeSeq}
 
 
 case class Field @Inject() (cells: SortedMap[Int, Stone]) extends IField:
@@ -106,6 +107,10 @@ case class Field @Inject() (cells: SortedMap[Int, Stone]) extends IField:
         ((size - 1) to 0 by -1).map((x: Int) => line(x) + space(x)).mkString("") +
         middle() +
         (0 until size).map((x: Int) => space(x) + line(x)).mkString("")
+
+    override def toXml(): Elem = <field>{ cells.map(keyval => cellToXml(keyval._1, keyval._2)) }</field>
+
+    def cellToXml(position: Int, stone: Stone): Elem = <cell><index>{ position }</index>{ stone.toXml() }</cell>
 
     override def toString: String = {
         if (size < 1) return "" + eol

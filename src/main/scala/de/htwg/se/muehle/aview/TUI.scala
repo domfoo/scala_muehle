@@ -22,6 +22,8 @@ class TUI(@Inject controller: IController) extends Observer:
         "Type 'move 2 3' to move a stone from position 2 to position 3." + eol +
         "Type 'undo' to undo your last command." + eol +
         "Type 'redo' to redo your last command." + eol +
+        "Type 'save' to save the current state of the game." + eol +
+        "Type 'load' to load the last save state." + eol +
         "Type 'new' for a new game with the same players." + eol +
         "Type 'h' or 'help' for this help message." + eol +
         "Type 'q' or 'quit' to close the game."
@@ -51,6 +53,10 @@ class TUI(@Inject controller: IController) extends Observer:
                 controller.undo()
             case Right(command) if command == "redo" =>
                 controller.redo()
+            case Right(command) if command == "save" => 
+                controller.save()
+            case Right(command) if command == "load" => 
+                controller.load()
             case Right(command) if command == "new" =>
                 controller.newGame()
             case Right(command) if command == "h" => 
@@ -78,6 +84,8 @@ class TUI(@Inject controller: IController) extends Observer:
                 Right(inputList.head)
             case "redo" :: Nil => Right(inputList.head)
             case "undo" :: Nil => Right(inputList.head)
+            case "save" :: Nil => Right(inputList.head)
+            case "load" :: Nil => Right(inputList.head)
             case "set" :: newPos :: Nil if (
                 Try(newPos.toInt).isSuccess &&
                 controller.field.fieldRange.contains(newPos.toInt) &&

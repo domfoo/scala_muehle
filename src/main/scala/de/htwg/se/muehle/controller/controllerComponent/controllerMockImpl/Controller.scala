@@ -20,3 +20,5 @@ class Controller(var field: Field, var state: ControllerState = Player1State(),
     override def redo(): Unit = {}
     override def stay(): Unit = {}
     override def newGame(): Unit = {}
+    override def save(): Unit = {}
+    override def load(): Unit = {}

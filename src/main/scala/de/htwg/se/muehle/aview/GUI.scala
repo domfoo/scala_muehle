@@ -29,6 +29,12 @@ class GUI(@Inject controller: IController) extends Frame with Observer:
         controller.newGame()
         MoveTextField.moveTextField.text = ""
       })
+      contents += new MenuItem(Action("Save") {
+        controller.save()
+      })
+      contents += new MenuItem(Action("Load") {
+        controller.load()
+      })
       contents += new Separator
       contents += new MenuItem(Action("Quit") {
         println("Bye!")

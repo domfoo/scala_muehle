@@ -19,3 +19,5 @@ trait IController extends Observable:
     def redo(): Unit
     def stay(): Unit
     def newGame(): Unit
+    def save(): Unit
+    def load(): Unit

@@ -6,6 +6,7 @@ import de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl.Field
 import de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl.Stone
 import de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl.{PlayStrategy, Move, Put}
 import de.htwg.se.muehle.model.playerComponent.Player
+import de.htwg.se.muehle.model.fileIO
 import de.htwg.se.muehle.util.{ControllerState, Player1State, Player2State}
 import de.htwg.se.muehle.util.Observable
 import de.htwg.se.muehle.MuehleModule
@@ -16,12 +17,10 @@ import net.codingwell.scalaguice.InjectorExtensions._
 
 
 class Controller @Inject() (
-        var field: Field, var state: ControllerState = Player1State(),
+        var field: Field, var fileHandler: fileIO.IFileIO, var state: ControllerState = Player1State(),
         var player1: Option[Player] = None, var player2: Option[Player] = None
     ) extends IController with Observable:
 
-    //def this() = this(Guice.createInjector(new MuehleModule).getInstance(classOf[Field]))
-    //val injector = Guice.createInjector(new MuehleModule)
     private var undoStack: List[PlayStrategy] = Nil
     private var redoStack: List[PlayStrategy] = Nil
 
@@ -82,4 +81,21 @@ class Controller @Inject() (
     override def newGame(): Unit =
         field = Field()
         state = Player1State()
+        notifyObservers
+
+    override def save(): Unit = 
+        fileHandler.save(field, currentPlayer().get)
+        notifyObservers
+    override def load(): Unit = 
+        val (f, p) = fileHandler.load()
+        this.field = f
+        p.stoneType match
+            case Stone.X => 
+                this.player1 = Some(p)
+                this.state = Player1State()
+            case Stone.O => 
+                this.player2 = Some(p)
+                this.state = Player1State()
+            case _ =>
+        
         notifyObservers
