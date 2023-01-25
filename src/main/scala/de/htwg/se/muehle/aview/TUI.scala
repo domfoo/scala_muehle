@@ -22,6 +22,9 @@ class TUI(@Inject controller: IController) extends Observer:
         "Type 'move 2 3' to move a stone from position 2 to position 3." + eol +
         "Type 'undo' to undo your last command." + eol +
         "Type 'redo' to redo your last command." + eol +
+        "Type 'save' to save the current state of the game." + eol +
+        "Type 'load' to load the last save state." + eol +
+        "Type 'new' for a new game with the same players." + eol +
         "Type 'h' or 'help' for this help message." + eol +
         "Type 'q' or 'quit' to close the game."
     val wrongInputMessage = "Invalid command. Please use 'help' to see available commands."
@@ -34,35 +37,36 @@ class TUI(@Inject controller: IController) extends Observer:
 
         println(eol + "Now, please enter the name of the second player:")
         val player2Name = readLine()
-
-        controller.initPlayers(player1Name, player2Name)
-
+        
         println(eol + helpMessage)
         println(controller.field.fieldNumberOverview + eol)
-        update
-
-        gameLoop(controller.player1.get)
+        
+        controller.initPlayers(player1Name, player2Name)
+        gameLoop()
     }
 
-    def gameLoop(player: Player): Unit =
-        println("Player " + player.name + " (" + player.stoneType + "):")
-        print("> ")
-        handleInput(readLine, player.stoneType) match
+    def gameLoop(): Unit =
+        handleInput(readLine, controller.currentPlayer().get.stoneType) match
             case Left(strategy) =>
                 controller.executeStrategy(strategy)
-                gameLoop(controller.nextPlayer())
             case Right(command) if command == "undo" =>
                 controller.undo()
-                gameLoop(player)
             case Right(command) if command == "redo" =>
                 controller.redo()
-                gameLoop(player)
+            case Right(command) if command == "save" => 
+                controller.save()
+            case Right(command) if command == "load" => 
+                controller.load()
             case Right(command) if command == "new" =>
                 controller.newGame()
-                gameLoop(player)
-            case Right(command) if command == "h" => gameLoop(player)
+            case Right(command) if command == "h" => 
+                controller.stay()
             case Right(command) if command == "q" =>
-            case _ => gameLoop(player)
+                return
+            case _ => 
+                controller.stay()
+        
+        gameLoop()
 
     // returns a Move when the input is valid or the first element of the input list which can be used to handle the help and quit command
     def handleInput(input: String, stone: Stone): Either[PlayStrategy, String] = {
@@ -80,6 +84,8 @@ class TUI(@Inject controller: IController) extends Observer:
                 Right(inputList.head)
             case "redo" :: Nil => Right(inputList.head)
             case "undo" :: Nil => Right(inputList.head)
+            case "save" :: Nil => Right(inputList.head)
+            case "load" :: Nil => Right(inputList.head)
             case "set" :: newPos :: Nil if (
                 Try(newPos.toInt).isSuccess &&
                 controller.field.fieldRange.contains(newPos.toInt) &&
@@ -99,4 +105,10 @@ class TUI(@Inject controller: IController) extends Observer:
                 Right(inputList.head)
     }
 
-    override def update: Unit = println(controller.field)
+    override def update: Unit = {
+        println(eol + controller.field)
+
+        val player = controller.currentPlayer().get
+        println("Player " + player.name + " (" + player.stoneType + "):")
+        print("> ")
+    }

@@ -33,3 +33,7 @@ metals.sbt
 
 # Worksheet
 *.worksheet.sc
+
+# files generated from the game
+muehle.xml
+muehle.json

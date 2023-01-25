@@ -29,6 +29,12 @@ class GUI(@Inject controller: IController) extends Frame with Observer:
         controller.newGame()
         MoveTextField.moveTextField.text = ""
       })
+      contents += new MenuItem(Action("Save") {
+        controller.save()
+      })
+      contents += new MenuItem(Action("Load") {
+        controller.load()
+      })
       contents += new Separator
       contents += new MenuItem(Action("Quit") {
         println("Bye!")
@@ -65,9 +71,11 @@ class GUI(@Inject controller: IController) extends Frame with Observer:
     contents += new Label("Player 2:")
     contents += Player2TextField.player2TextField
   }
+  def currentPlayerPanel: Label = new Label(s"It is ${controller.currentPlayer().getOrElse("")}'s move!")
   def titleAndPlayerNamesPanel: GridPanel = new GridPanel(2,1) {
     contents += titlePanel
     contents += playerNamesPanel
+    contents += currentPlayerPanel
   }
 
   // singleton which makes it possible to read a position (from CellButton)
@@ -75,10 +83,10 @@ class GUI(@Inject controller: IController) extends Frame with Observer:
 
   // creating a panel for moving stones on the playfield
   def movePanel: GridPanel = new GridPanel(1,2) {
-          border = Swing.EmptyBorder(20,100,20,100)
-          contents += new Label("Move to position (1-24): ")
-          contents += MoveTextField.moveTextField
-        }
+    border = Swing.EmptyBorder(20,100,20,100)
+    contents += new Label("Move to position (1-24): ")
+    contents += MoveTextField.moveTextField
+  }
 
   // put all panels together
   def contentPanel = new BorderPanel {
@@ -139,7 +147,7 @@ class GUI(@Inject controller: IController) extends Frame with Observer:
               controller.field.fieldRange.contains(pos) &&
               controller.field.isEmptyCell(pos)
             )
-            controller.executeStrategy(Put(pos, controller.nextPlayer().stoneType))
+            controller.executeStrategy(Put(pos, controller.currentPlayer().get.stoneType))
           // if textfield contains a number (position), move a stone on the playfield
           else if (input.matches("[1-9]|(1[0-9])|(2[0-4])"))
             val newPos = input.toInt

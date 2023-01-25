@@ -1,6 +1,8 @@
 package de.htwg.se.muehle.model.fieldComponent
 
 import de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl.Stone
+import scala.xml.Elem
+import play.api.libs.json.*
 
 trait IField:
     def replaceCell(position: Int, stone: Stone): IField
@@ -14,4 +16,6 @@ trait IField:
     def space(i: Int): String 
     def middle(): String
     def fieldPlaceholder(): String
+    def toXml(): Elem
+    def toJson(): JsValue
     override def toString: String

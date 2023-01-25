@@ -3,6 +3,8 @@ package de.htwg.se.muehle.model.fieldComponent.fieldMockImpl
 import de.htwg.se.muehle.model.fieldComponent.IField
 import de.htwg.se.muehle.model.fieldComponent.fieldBaseImpl.Stone
 import scala.collection.immutable.SortedMap
+import scala.xml.Elem
+import play.api.libs.json.*
 
 case class Field(var cells: SortedMap[Int, Stone]) extends IField:
     
@@ -20,3 +22,5 @@ case class Field(var cells: SortedMap[Int, Stone]) extends IField:
     override def space(i: Int): String = ""
     override def middle(): String = ""
     override def fieldPlaceholder(): String = ""
+    override def toXml(): Elem = <field></field>
+    override def toJson(): JsValue = Json.obj()

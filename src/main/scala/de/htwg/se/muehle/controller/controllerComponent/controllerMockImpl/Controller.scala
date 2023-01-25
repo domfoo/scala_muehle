@@ -12,9 +12,13 @@ class Controller(var field: Field, var state: ControllerState = Player1State(),
     
     field = Field()
     
-    override def nextPlayer(): Player = player1.get
+    override def nextPlayer(): Option[Player] = player2
+    override def currentPlayer(): Option[Player] = player1
     override def initPlayers(player1: String, player2: String): Unit = {}
     override def executeStrategy(strategy: PlayStrategy): Unit = {}
     override def undo(): Unit = {}
     override def redo(): Unit = {}
+    override def stay(): Unit = {}
     override def newGame(): Unit = {}
+    override def save(): Unit = {}
+    override def load(): Unit = {}
