@@ -6,7 +6,8 @@ WORKDIR /scala-muehle
 ADD . /scala-muehle
 
 # Install Dependencys
-RUN apt-get update && apt-get install -y locales && rm -rf /var/lib/apt/lists/*\
+RUN apt-get update && apt-get install -y --no-install-recommends apt-utils
+RUN apt-get install -y locales && rm -rf /var/lib/apt/lists/*\
 	&& localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
 
 RUN apt-get update && apt-get install -y libxrender1 libxtst6 libxi6
@@ -16,6 +17,5 @@ RUN apt install -y xauth
 # Set Locale
 ENV LANG en_DE.utf8
 
-# Update sbt and start Game
-RUN sbt update
+# start Game
 CMD sbt run
